@@ -15,6 +15,21 @@ const routes = [
         path: 'home',
         name: 'Home',
         component: () => import('@/views/home')
+      },
+      {
+        path: 'sys/user',
+        name: 'User',
+        component: () => import('@/views/sys/User')
+      },
+      {
+        path: 'sys/role',
+        name: 'User',
+        component: () => import('@/views/sys/Role')
+      },
+      {
+        path: 'sys/menu',
+        name: 'User',
+        component: () => import('@/views/sys/Menu')
       }
     ]
   },

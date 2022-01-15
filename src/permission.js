@@ -4,7 +4,6 @@ import { getToken } from '@/utils/auth';
 const whiteList = ['/login']
 
 router.beforeEach((to, from, next) => {
-
   const hasToken = getToken();
 
   if (hasToken) {

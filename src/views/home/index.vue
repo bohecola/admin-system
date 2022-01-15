@@ -9,7 +9,7 @@
 export default {
   name: 'Home',
   mounted() {
-    console.log(this.$store.getters.user);
+    // console.log(this.$store.getters.user);
   }
 }
 </script>
