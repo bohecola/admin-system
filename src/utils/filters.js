@@ -8,7 +8,7 @@ export function dateFormat(timestamp, format = 'Y-m-d') {
   const date = timestamp ? new Date(timestamp) : new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const day = date.getDay();
+  const day = date.getDate();
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
@@ -29,7 +29,7 @@ export function dateFormat(timestamp, format = 'Y-m-d') {
   );
 }
 
-// 补领函数
+// 补零函数
 export const zeroFill = n => n < 10 ? `0${n}` : n;
 
 // 菜单类型 mapping
