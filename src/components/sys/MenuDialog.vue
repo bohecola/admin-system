@@ -17,6 +17,15 @@
       <el-form-item label="desc" prop="desc">
         <el-input v-model="form.desc"></el-input>
       </el-form-item>
+      <el-form-item label="type" prop="type">
+        <el-select v-model="form.type" filterable @change="handleSelectChange">
+          <el-option v-for="item in typeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="parent" prop="parentId">
         <el-select v-model="form.parentId" clearable filterable @change="handleSelectChange">
           <el-option v-for="item in options"
@@ -69,11 +78,16 @@ export default {
   },
   data() {
     return {
+      typeOptions: [
+        { label: '目录', value: 0 },
+        { label: '菜单', value: 1 }
+      ],
       form: {},
       rules: {
         name: [{ required: true, message: 'name is required', trigger: 'blur' }],
         path: [{ required: true, message: 'path is required', trigger: 'blur' }],
-        unique: [{ required: true, message: 'unique is required', trigger: 'blur' }]
+        unique: [{ required: true, message: 'unique is required', trigger: 'blur' }],
+        type: [{ required: true, message: 'type is required', trigger: 'blur' }],
       },
     }
   },

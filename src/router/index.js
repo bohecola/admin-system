@@ -14,34 +14,35 @@ const routes = [
       {
         path: 'home',
         name: 'Home',
-        component: () => import('@/views/home')
+        component: () => import('@/views/home.vue')
       },
       {
-        path: 'sys/user',
-        name: 'User',
-        component: () => import('@/views/sys/User')
+        path: '/sys/user',
+        name: 'user',
+        component: () => import('@/views/user.vue')
       },
       {
-        path: 'sys/role',
-        name: 'User',
-        component: () => import('@/views/sys/Role')
+        path: '/sys/role',
+        name: 'role',
+        component: () => import('@/views/role.vue')
       },
       {
-        path: 'sys/menu',
-        name: 'User',
-        component: () => import('@/views/sys/Menu')
+        path: '/sys/menu',
+        name: 'menu',
+        component: () => import('@/views/menu.vue')
       }
     ]
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/login')
+    component: () => import('@/pages/login')
   }
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode:  'history'
 });
 
-export default router
+export default router;

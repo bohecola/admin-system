@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    default-active="home"
+    :default-active="$route.path"
     text-color="#fff"
     active-text-color="#2c7fe7"
     background-color="#1f2d3d"
@@ -11,7 +11,7 @@
       <i class="el-icon-monitor"></i>
       <span slot="title">首页</span>
     </el-menu-item>
-    <el-submenu index="1" popper-append-to-body>
+    <el-submenu index="/sys" popper-append-to-body>
       <template slot="title">
         <i class="el-icon-setting"></i>
         <span>系统管理</span>
@@ -26,6 +26,16 @@
 <script>
 export default {
   name: 'SideBar',
+  computed: {
+    activeMenu() {
+      const route = this.$route;
+      const { meta, path } = route;
+      if (meta.activeMenu) {
+        return meta.activeMenu;
+      }
+      return path;
+    }
+  },
   methods: {
 
   }

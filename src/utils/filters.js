@@ -31,3 +31,15 @@ export function dateFormat(timestamp, format = 'Y-m-d') {
 
 // 补领函数
 export const zeroFill = n => n < 10 ? `0${n}` : n;
+
+// 菜单类型 mapping
+export const menuTypeFormat = (v) => {
+  switch (v) {
+    case 0:
+      return '目录';
+    case 1:
+      return '菜单'
+    default:
+      break;
+  }
+};

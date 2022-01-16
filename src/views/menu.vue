@@ -5,12 +5,17 @@
       <el-button type="primary" size="mini" @click="handleAdd">新增</el-button>
     </div>
     <el-table
-      :data="tableData"
+      :data="computedTableData"
       border
     >
       <el-table-column align="center" width="80" label="name" prop="name" show-overflow-tooltip></el-table-column>
       <el-table-column align="center" width="80" label="desc" prop="desc"></el-table-column>
       <el-table-column align="center" width="160" label="parentId" prop="parentId" show-overflow-tooltip></el-table-column>
+      <el-table-column align="center" width="80" label="type">
+        <template slot-scope="scope">
+          {{ scope.row.type | menuTypeFormat }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" width="80" label="unique" prop="unique"></el-table-column>
       <el-table-column align="center" width="180" label="path" prop="path"></el-table-column>
       <el-table-column align="center" width="80" label="icon" prop="icon"></el-table-column>
@@ -51,7 +56,7 @@
 
 <script>
 import { getMenuList, removeMenu, findMenu } from '@/api/sys/menu';
-import MenuDialog from './components/MenuDialog';
+import MenuDialog from '@/components/sys/MenuDialog';
 
 export default {
   name: 'Menu',
@@ -70,6 +75,17 @@ export default {
   mounted() {
     this.fetchData();
   },
+  computed: {
+    computedTableData() {
+      return this.tableData.map(item => {
+        item.desc = item.desc ||  '-';
+        item.icon = item.icon || '-';
+        item.parentId = item.parentId || '-';
+        item.hidden = String(item.hidden);
+        return item;
+      })
+    }
+  },
   methods: {
     fetchData() {
       getMenuList()
@@ -86,7 +102,7 @@ export default {
     async handleEdit(index, row) {
       this.isEdit = true;
       this.dialogData = await findMenu(row._id);
-      this.options = this.tableData.filter(item => item._id !== row._id);
+      this.options = this.tableData;
       this.dialogVisible = true;
       console.log(index, row);
     },
