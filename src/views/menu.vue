@@ -14,7 +14,7 @@
     >
       <el-table-column align="left" width="160" label="name" prop="name" show-overflow-tooltip></el-table-column>
       <el-table-column align="center" width="80" label="desc" prop="desc"></el-table-column>
-      <el-table-column align="center" width="160" label="parentId" prop="parentId" show-overflow-tooltip></el-table-column>
+      <!-- <el-table-column align="center" width="160" label="parentName" prop="parentName" show-overflow-tooltip></el-table-column> -->
       <el-table-column align="center" width="80" label="type">
         <template slot-scope="scope">
           {{ scope.row.type | menuTypeFormat }}

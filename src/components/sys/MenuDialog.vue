@@ -2,7 +2,8 @@
   <el-dialog
     :title="isEdit ? '编辑' : '新增'"
     :visible.sync="visible"
-    width="30%">
+    width="40%"
+    @closed="onDialogClosed">
     <el-form
       :model="form"
       ref="form"
@@ -18,7 +19,7 @@
         <el-input v-model="form.desc"></el-input>
       </el-form-item>
       <el-form-item label="type" prop="type">
-        <el-select v-model="form.type" filterable @change="handleSelectChange">
+        <el-select v-model="form.type" filterable>
           <el-option v-for="item in typeOptions"
             :key="item.value"
             :label="item.label"
@@ -27,13 +28,26 @@
         </el-select>
       </el-form-item>
       <el-form-item label="parent" prop="parentId">
-        <el-select v-model="form.parentId" clearable filterable @change="handleSelectChange">
-          <el-option v-for="item in options"
-            :key="item.value"
-            :label="item.name"
-            :value="item._id">
-          </el-option>
-        </el-select>
+        <el-popover
+          width="360"
+          placement="bottom"
+          trigger="click">
+          <el-input v-model="filterText">
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          </el-input>
+          <el-tree
+            :style="{ marginTop: '10px' }"
+            :data="menuTree"
+            :props="{ label: 'name', children: 'children' }"
+            node-key="_id"
+            :expand-on-click-node="false"
+            :highlight-current="true"
+            :filter-node-method="filterNode"
+            @node-click="handleNodeClick"
+            ref="tree">
+          </el-tree>
+          <el-input v-model="form.parentName" readonly placeholder="请选择" slot="reference"></el-input>
+        </el-popover>        
       </el-form-item>
       <el-form-item label="path" prop="path">
         <el-input v-model="form.path"></el-input>
@@ -89,28 +103,16 @@ export default {
         unique: [{ required: true, message: 'unique is required', trigger: 'blur' }],
         type: [{ required: true, message: 'type is required', trigger: 'blur' }],
       },
+      filterText: '',
     }
   },
   watch: {
     dialogData(val) {
-      const {
-        parentId = null,
-        _id = null,
-        name = '',
-        desc = '',
-        path = '',
-        unique = '',
-        icon = ''
-      } = val;
-      this.form = {
-        parentId,
-        _id,
-        name,
-        desc,
-        path,
-        unique,
-        icon
-      }
+      const { parentId = null, parentName = null, type = null, _id = null, name = '', desc = '', path = '', unique = '', icon = '' } = val;
+      this.form = { parentId, parentName, type, _id, name, desc, path, unique, icon }
+    },
+    filterText(val) {
+      this.$refs.tree.filter(val);
     }
   },
   computed: {
@@ -120,13 +122,25 @@ export default {
       },
       set(newValue) {
         this.$emit("update:dialogVisible", newValue);
-        if (!newValue) {
-          this.$refs['form'].clearValidate();
-        }
       },
     },
+    menuTree() {
+      return this.options;
+    }
   },
   methods: {
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.name.indexOf(value) !== -1;
+    },
+    handleNodeClick(data) {
+      this.form.parentId = data._id;
+      this.form.parentName = data.name;
+    },
+    onDialogClosed() {
+      this.$refs['form'].clearValidate();
+      this.$refs.tree.setCurrentKey(null);
+    },
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
@@ -143,9 +157,6 @@ export default {
           return false;
         }
       });
-    },
-    handleSelectChange() {
-
     }
   },
 };
