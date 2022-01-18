@@ -12,20 +12,17 @@
       :inline="false"
       size="medium"
     >
-      <el-form-item label="name" prop="name">
-        <el-input v-model="form.name"></el-input>
-      </el-form-item>
-      <el-form-item label="desc" prop="desc">
-        <el-input v-model="form.desc"></el-input>
-      </el-form-item>
       <el-form-item label="type" prop="type">
-        <el-select v-model="form.type" filterable>
-          <el-option v-for="item in typeOptions"
+        <el-radio-group v-model="form.type">
+          <el-radio
+            v-for="item in menuTypeOptions"
             :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+            :label="item.value"
+          >{{item.text}}</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="name" prop="name">
+        <el-input v-model="form.name" placeholder="please input name"></el-input>
       </el-form-item>
       <el-form-item label="parent" prop="parentId">
         <el-popover
@@ -36,27 +33,24 @@
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
           <el-tree
-            :style="{ marginTop: '10px' }"
-            :data="menuTree"
-            :props="{ label: 'name', children: 'children' }"
             node-key="_id"
+            :style="{ marginTop: '10px' }"
+            :data="polyfillMenuTree"
+            :props="{ label: 'name', children: 'children' }"
             :expand-on-click-node="false"
             :highlight-current="true"
             :filter-node-method="filterNode"
             @node-click="handleNodeClick"
             ref="tree">
           </el-tree>
-          <el-input v-model="form.parentName" readonly placeholder="请选择" slot="reference"></el-input>
+          <el-input v-model="selectedMenuName" readonly placeholder="please select" slot="reference"></el-input>
         </el-popover>        
       </el-form-item>
       <el-form-item label="path" prop="path">
-        <el-input v-model="form.path"></el-input>
-      </el-form-item>
-      <el-form-item label="unique" prop="unique">
-        <el-input v-model="form.unique"></el-input>
+        <el-input v-model="form.path" placeholder="please input path"></el-input>
       </el-form-item>
       <el-form-item label="icon" prop="icon">
-        <el-input v-model="form.icon"></el-input>
+        <el-input v-model="form.icon" placeholder="please select icon"></el-input>
       </el-form-item>
     </el-form>
 
@@ -85,37 +79,37 @@ export default {
       type: Object,
       default: () => {}
     },
-    options: {
+    menuTree: {
       type: Array,
       default: () => []
     }
   },
   data() {
     return {
-      typeOptions: [
-        { label: '目录', value: 0 },
-        { label: '菜单', value: 1 }
+      menuTypeOptions: [
+        { text: '目录', value: 0 },
+        { text: '菜单', value: 1 }
       ],
       form: {},
       rules: {
-        name: [{ required: true, message: 'name is required', trigger: 'blur' }],
-        path: [{ required: true, message: 'path is required', trigger: 'blur' }],
-        unique: [{ required: true, message: 'unique is required', trigger: 'blur' }],
-        type: [{ required: true, message: 'type is required', trigger: 'blur' }],
+        name: [{ required: true, message: 'name is required', trigger: 'blur' }]
       },
       filterText: '',
+      selectedMenuName: ''
     }
   },
   watch: {
     dialogData(val) {
-      const { parentId = null, parentName = null, type = null, _id = null, name = '', desc = '', path = '', unique = '', icon = '' } = val;
-      this.form = { parentId, parentName, type, _id, name, desc, path, unique, icon }
+      const { _id = null, name = '', path = '', type = 0,  icon = null, parentId = null } = val;
+      this.form = { _id, name, path, icon, type, parentId };
+      this.selectedMenuName = this.form.parentName || '一级菜单';
     },
     filterText(val) {
       this.$refs.tree.filter(val);
     }
   },
   computed: {
+    // dialog 显示 隐藏
     visible: {
       get() {
         return this.dialogVisible;
@@ -124,28 +118,37 @@ export default {
         this.$emit("update:dialogVisible", newValue);
       },
     },
-    menuTree() {
-      return this.options;
+    // 菜单书添加垫片
+    polyfillMenuTree() {
+      return [{
+        _id: null,
+        name: '一级菜单',
+        children: this.menuTree
+      }];
     }
   },
   methods: {
+    // 节点筛选搜索
     filterNode(value, data) {
       if (!value) return true;
       return data.name.indexOf(value) !== -1;
     },
+    // 节点点击
     handleNodeClick(data) {
       this.form.parentId = data._id;
-      this.form.parentName = data.name;
+      this.selectedMenuName = data.name;
     },
+    // 单框关闭的回调
     onDialogClosed() {
       this.$refs['form'].clearValidate();
       this.$refs.tree.setCurrentKey(null);
     },
+    // 提交数据
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
+          this.removePropertyOfNull(this.form);
           const res = !this.isEdit ? await addMenu(this.form) : await updateMenu(this.form._id, this.form);
-          console.log(!this.isEdit ? 'add' : 'edit', res);
           this.$message({
             message: res ? '操作成功' : '操作失败',
             type: res ? 'success' : 'error'
@@ -157,7 +160,10 @@ export default {
           return false;
         }
       });
+    },
+    removePropertyOfNull(obj) {
+      Object.keys(obj).forEach(key => (obj[key] == null || obj[key] === '') && delete obj[key]);
     }
-  },
+  }
 };
 </script>

@@ -13,27 +13,25 @@
       border
     >
       <el-table-column align="left" width="160" label="name" prop="name" show-overflow-tooltip></el-table-column>
-      <el-table-column align="center" width="80" label="desc" prop="desc"></el-table-column>
       <!-- <el-table-column align="center" width="160" label="parentName" prop="parentName" show-overflow-tooltip></el-table-column> -->
       <el-table-column align="center" width="80" label="type">
         <template slot-scope="scope">
           {{ scope.row.type | menuTypeFormat }}
         </template>
       </el-table-column>
-      <el-table-column align="center" width="80" label="unique" prop="unique"></el-table-column>
       <el-table-column align="center" width="180" label="path" prop="path"></el-table-column>
       <el-table-column align="center" width="80" label="icon" prop="icon"></el-table-column>
       <el-table-column align="center" width="80" label="hidden" prop="hidden"></el-table-column>
       <el-table-column align="center" width="80" label="status" prop="status"></el-table-column>
       <el-table-column align="center" width="80" label="sort" prop="sort"></el-table-column>
-      <el-table-column align="center" width="160" label="createAt" prop="createAt">
+      <el-table-column align="center" width="160" label="createdAt" prop="createdAt">
         <template slot-scope="scope">
-          {{ scope.row.createAt | dateFormat('Y-m-d H:i:s') }}
+          {{ scope.row.createdAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
-      <el-table-column align="center" width="160" label="updateAt" prop="updateAt">
+      <el-table-column align="center" width="160" label="updatedAt" prop="updatedAt">
         <template slot-scope="scope">
-          {{ scope.row.createAt | dateFormat('Y-m-d H:i:s') }}
+          {{ scope.row.updatedAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
       <el-table-column fixed="right" width="160" align="center" label="operate">
@@ -52,7 +50,7 @@
       :dialogVisible="dialogVisible"
       :isEdit="isEdit"
       :dialogData="dialogData"
-      :options="options"
+      :menuTree="menuTree"
       @update:dialogVisible="updateDialogVisible"
     />
   </div>
@@ -69,11 +67,11 @@ export default {
   },
   data() {
     return {
-      treeData: [],
+      tableTreeData: [],
       dialogVisible: false,
       isEdit: false,
       dialogData: {},
-      options: [],
+      menuTree: [],
       loading: false
     }
   },
@@ -87,21 +85,19 @@ export default {
           if (item.children) {
             recurPolyfill(item.children)
           }
-          item.desc = item.desc || '-';
-          item.parentId = item.parentId || '-';
           item.icon = item.icon || '-';
           item.hidden = String(item.hidden);
           return item;
         })
       }
-      return recurPolyfill(this.treeData);
+      return recurPolyfill(this.tableTreeData);
     }
   },
   methods: {
     async fetchData() {
       this.loading = true;
       const res = await getMenuList();
-      this.treeData = this.formatDataTree(res);
+      this.tableTreeData = this.formatDataTree(res);
       this.loading = false;
     },
 
@@ -137,13 +133,13 @@ export default {
     handleAdd() {
       this.isEdit = false;
       this.dialogData = {};
-      this.options = this.treeData;
+      this.menuTree = this.tableTreeData;
       this.dialogVisible = true;
     },
     async handleEdit(index, row) {
       this.isEdit = true;
       this.dialogData = await findMenu(row._id);
-      this.options = this.treeData;
+      this.menuTree = this.tableTreeData;
       this.dialogVisible = true;
     },
     async handleDelete(index, row) {
@@ -153,11 +149,9 @@ export default {
         type: 'success'
       });
       this.fetchData();
-      console.log('delete', res);
     },
     handleRefresh() {
       this.fetchData();
-      console.log('refresh');
     },
     updateDialogVisible(val) {
       this.dialogVisible = val;
