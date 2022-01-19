@@ -116,9 +116,9 @@ export default {
             if (c.parentId === p._id) {
               let _children = JSON.parse(JSON.stringify(children));
               _children.splice(i, 1);
-              dataToTree([c], _children);
               // 找了一个叶子节点后，从这个叶子节点出发继续寻找这个叶子节点下的子节点
               // 直至这一轮找完，开始下一轮遍历
+              dataToTree([c], _children);
               if (p.children) {
                 p.children.push(c);
               } else {

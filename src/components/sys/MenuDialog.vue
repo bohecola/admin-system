@@ -22,7 +22,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="name" prop="name">
-        <el-input v-model="form.name" placeholder="please input name"></el-input>
+        <el-input v-model.trim="form.name" placeholder="please input name"></el-input>
       </el-form-item>
       <el-form-item label="parent" prop="parentId">
         <el-popover
@@ -46,11 +46,11 @@
           <el-input v-model="selectedMenuName" readonly placeholder="please select" slot="reference"></el-input>
         </el-popover>        
       </el-form-item>
-      <el-form-item label="path" prop="path">
+      <el-form-item v-if="form.type === 1" label="path" prop="path">
         <el-input v-model="form.path" placeholder="please input path"></el-input>
       </el-form-item>
       <el-form-item label="icon" prop="icon">
-        <el-input v-model="form.icon" placeholder="please select icon"></el-input>
+        <el-input v-model.trim="form.icon" placeholder="please select icon"></el-input>
       </el-form-item>
     </el-form>
 
@@ -100,9 +100,10 @@ export default {
   },
   watch: {
     dialogData(val) {
-      const { _id = null, name = '', path = '', type = 0,  icon = null, parentId = null } = val;
-      this.form = { _id, name, path, icon, type, parentId };
-      this.selectedMenuName = this.form.parentName || '一级菜单';
+      const { _id = null, name = '', path = '', type = 0,  icon = null } = val;
+      this.form = { _id, name, path, icon, type };
+      if (val.parentId) this.form.parentId = val.parentId;
+      this.selectedMenuName = val.parentName || '一级菜单';
     },
     filterText(val) {
       this.$refs.tree.filter(val);
@@ -128,15 +129,15 @@ export default {
     }
   },
   methods: {
-    // 节点筛选搜索
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.name.indexOf(value) !== -1;
-    },
     // 节点点击
     handleNodeClick(data) {
       this.form.parentId = data._id;
       this.selectedMenuName = data.name;
+    },
+    // 节点筛选搜索
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.name.indexOf(value) !== -1;
     },
     // 单框关闭的回调
     onDialogClosed() {
@@ -147,8 +148,10 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.removePropertyOfNull(this.form);
-          const res = !this.isEdit ? await addMenu(this.form) : await updateMenu(this.form._id, this.form);
+          this.removePropertyOfNull(this.form, 'parentId');
+          const res = !this.isEdit 
+            ? await addMenu(this.form) 
+            : await updateMenu(this.form._id, this.form);
           this.$message({
             message: res ? '操作成功' : '操作失败',
             type: res ? 'success' : 'error'
@@ -161,8 +164,9 @@ export default {
         }
       });
     },
-    removePropertyOfNull(obj) {
-      Object.keys(obj).forEach(key => (obj[key] == null || obj[key] === '') && delete obj[key]);
+    removePropertyOfNull(obj, excludeKey) {
+      const keys = Object.keys(obj).filter(key => key !== excludeKey);
+      keys.forEach(key => (obj[key] == null || obj[key] === '') && delete obj[key]);
     }
   }
 };
