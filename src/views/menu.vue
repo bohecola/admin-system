@@ -2,7 +2,7 @@
   <div class="sys-menu">
     <div class="table-toolbar">
       <el-button size="mini" @click="handleRefresh">刷新</el-button>
-      <el-button type="primary" size="mini" @click="handleAdd">新增</el-button>
+      <el-button size="mini" @click="handleAdd" type="primary">新增</el-button>
     </div>
     <el-table
       v-loading="loading"
@@ -13,7 +13,6 @@
       border
     >
       <el-table-column align="left" width="160" label="name" prop="name" show-overflow-tooltip></el-table-column>
-      <!-- <el-table-column align="center" width="160" label="parentName" prop="parentName" show-overflow-tooltip></el-table-column> -->
       <el-table-column align="center" width="80" label="type">
         <template slot-scope="scope">
           {{ scope.row.type | menuTypeFormat }}
@@ -38,10 +37,11 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
+            type="text"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
-            type="danger"
+            type="text"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -94,54 +94,28 @@ export default {
     }
   },
   methods: {
+    // 列表
     async fetchData() {
       this.loading = true;
       const res = await getMenuList();
-      this.tableTreeData = this.formatDataTree(res);
+      this.tableTreeData = this.$utils.formatDataTree(res);
       this.loading = false;
     },
-
-    // 树形结构
-    formatDataTree(data) {
-      let parent = data.filter(p => p.parentId === null),
-          children = data.filter(c => c.parentId !== null);
-      
-      dataToTree(parent, children);
-
-      return parent;
-
-      function dataToTree(parent, children) {
-        parent.map(p => {
-          children.map((c, i) => {
-            if (c.parentId === p._id) {
-              let _children = JSON.parse(JSON.stringify(children));
-              _children.splice(i, 1);
-              // 找了一个叶子节点后，从这个叶子节点出发继续寻找这个叶子节点下的子节点
-              // 直至这一轮找完，开始下一轮遍历
-              dataToTree([c], _children);
-              if (p.children) {
-                p.children.push(c);
-              } else {
-                p.children = [c];
-              }
-            }
-          });
-        });
-      }
-    },
-
+    // 添加
     handleAdd() {
       this.isEdit = false;
       this.dialogData = {};
       this.menuTree = this.tableTreeData;
       this.dialogVisible = true;
     },
+    // 编辑
     async handleEdit(index, row) {
       this.isEdit = true;
       this.dialogData = await findMenu(row._id);
       this.menuTree = this.tableTreeData;
       this.dialogVisible = true;
     },
+    // 删除
     async handleDelete(index, row) {
       const res = await removeMenu(row._id);
       this.$message({
@@ -150,18 +124,14 @@ export default {
       });
       this.fetchData();
     },
+    // 刷新
     handleRefresh() {
       this.fetchData();
     },
+    // 弹框
     updateDialogVisible(val) {
       this.dialogVisible = val;
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .table-toolbar {
-    margin-bottom: 12px;
-  }
-</style>

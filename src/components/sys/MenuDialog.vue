@@ -2,15 +2,15 @@
   <el-dialog
     :title="isEdit ? '编辑' : '新增'"
     :visible.sync="visible"
-    width="40%"
-    @closed="onDialogClosed">
+    @closed="onDialogClosed"
+    width="40%">
     <el-form
-      :model="form"
       ref="form"
+      :model="form"
       :rules="rules"
-      label-width="80px"
       :inline="false"
       size="medium"
+      label-width="80px"
     >
       <el-form-item label="type" prop="type">
         <el-radio-group v-model="form.type">
@@ -33,6 +33,7 @@
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
           <el-tree
+            ref="tree"
             node-key="_id"
             :style="{ marginTop: '10px' }"
             :data="polyfillMenuTree"
@@ -40,8 +41,7 @@
             :expand-on-click-node="false"
             :highlight-current="true"
             :filter-node-method="filterNode"
-            @node-click="handleNodeClick"
-            ref="tree">
+            @node-click="handleNodeClick">
           </el-tree>
           <el-input v-model="selectedMenuName" readonly placeholder="please select" slot="reference"></el-input>
         </el-popover>        
@@ -54,9 +54,9 @@
       </el-form-item>
     </el-form>
 
-    <span slot="footer" class="dialog-footer">
-      <el-button size="mini" @click="visible = false">取 消</el-button>
-      <el-button size="mini" type="primary" @click="submit('form')">确 定</el-button>
+    <span slot="footer">
+      <el-button size="mini" @click="visible = false">取消</el-button>
+      <el-button size="mini" type="primary" @click="submit('form')">确定</el-button>
     </span>
   </el-dialog>
 </template>
@@ -148,10 +148,10 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.removePropertyOfNull(this.form, 'parentId');
-          const res = !this.isEdit 
-            ? await addMenu(this.form) 
-            : await updateMenu(this.form._id, this.form);
+          this.$utils.removePropertyOfNull(this.form, 'parentId');
+          const res = this.isEdit 
+            ? await updateMenu(this.form._id, this.form)
+            : await addMenu(this.form);
           this.$message({
             message: res ? '操作成功' : '操作失败',
             type: res ? 'success' : 'error'
@@ -163,10 +163,6 @@ export default {
           return false;
         }
       });
-    },
-    removePropertyOfNull(obj, excludeKey) {
-      const keys = Object.keys(obj).filter(key => key !== excludeKey);
-      keys.forEach(key => (obj[key] == null || obj[key] === '') && delete obj[key]);
     }
   }
 };

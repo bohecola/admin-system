@@ -16,9 +16,9 @@ export function addUser (data) {
   });
 }
 
-export function updateUser (data) {
+export function updateUser (param, data) {
   return request({
-    url: '/users',
+    url: `/users/${param}`,
     method: 'put',
     data
   });
@@ -26,16 +26,14 @@ export function updateUser (data) {
 
 export function removeUser (param) {
   return request({
-    url: '/users',
-    method: 'delete',
-    params: param
+    url: `/users/${param}`,
+    method: 'delete'
   });
 }
 
 export function findUser (param) {
   return request({
-    url: '/users',
-    method: 'get',
-    params: param
+    url: `/users/${param}`,
+    method: 'get'
   });
 }

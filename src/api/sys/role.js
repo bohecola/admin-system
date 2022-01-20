@@ -16,9 +16,9 @@ export function addRole (data) {
   });
 }
 
-export function updateRole (data) {
+export function updateRole (param, data) {
   return request({
-    url: '/roles',
+    url: `/roles/${param}`,
     method: 'put',
     data
   });
@@ -26,16 +26,14 @@ export function updateRole (data) {
 
 export function removeRole (param) {
   return request({
-    url: '/roles',
+    url: `/roles/${param}`,
     method: 'delete',
-    params: param
   });
 }
 
 export function findRole (param) {
   return request({
-    url: '/roles',
+    url: `/roles/${param}`,
     method: 'get',
-    params: param
   });
 }
