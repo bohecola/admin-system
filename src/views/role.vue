@@ -9,8 +9,8 @@
       :data="tableData"
       border>
       <el-table-column v-for="col in columns"
-        :prop="col.id"
-        :key="col.id"
+        :prop="col.prop"
+        :key="col.prop"
         :label="col.label"
         :min-width="col.width"
         :align="col.align">
@@ -52,12 +52,12 @@
 
 <script>
 import { getRoleList, removeRole, findRole } from '@/api/sys/role';
-import RoleDialog from '@/components/sys/RoleDialog';
+import RoleDialog from '@/components/sys/role-dialog';
 
 const columns = [
-  { id: 'name', label: 'name', width: '80', align: 'center' },
-  { id: 'label', label: 'label', width: '80', align: 'center' },
-  { id: 'remark', label: 'remark', width: '160', align: 'center' }
+  { prop: 'name', label: 'name', width: '80', align: 'center' },
+  { prop: 'label', label: 'label', width: '80', align: 'center' },
+  { prop: 'remark', label: 'remark', width: '160', align: 'center' }
 ];
 
 export default {
@@ -101,11 +101,8 @@ export default {
     },
     // 删除
     async handleDelete(index, row) {
-      const res = await removeRole(row._id);
-      this.$message({
-        message: '删除成功',
-        type: 'success'
-      });
+      await removeRole(row._id);
+      this.$message.success('删除成功');
       this.fetchData();
     },
     // 弹框
@@ -115,7 +112,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

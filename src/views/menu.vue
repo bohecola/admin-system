@@ -58,7 +58,7 @@
 
 <script>
 import { getMenuList, removeMenu, findMenu } from '@/api/sys/menu';
-import MenuDialog from '@/components/sys/MenuDialog';
+import MenuDialog from '@/components/sys/menu-dialog';
 
 export default {
   name: 'Menu',
@@ -117,11 +117,8 @@ export default {
     },
     // 删除
     async handleDelete(index, row) {
-      const res = await removeMenu(row._id);
-      this.$message({
-        message: '删除成功',
-        type: 'success'
-      });
+      await removeMenu(row._id);
+      this.$message.success('删除成功');
       this.fetchData();
     },
     // 刷新

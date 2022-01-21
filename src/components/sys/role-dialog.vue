@@ -177,11 +177,11 @@ export default {
           const res = this.isEdit
             ? await updateRole(this.form._id, this.form)
             : await addRole(this.form);
-          this.$message({
-            message: res ? '操作成功' : '操作失败',
-            type: res ? 'success' : 'error'
-          });
+          res 
+            ? this.$message.success('操作成功')
+            : this.$message.error('操作失败');
           this.visible = false;
+          this.$parent.fetchData();
         } else {
           console.log('error submit role-form');
           return false;

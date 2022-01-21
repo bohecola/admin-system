@@ -101,6 +101,8 @@ export default {
   watch: {
     dialogData(val) {
       const { _id = null, name = '', path = '', type = 0,  icon = null } = val;
+
+      // (dialogData)val有值，就是数据的回显
       this.form = { _id, name, path, icon, type };
       if (val.parentId) this.form.parentId = val.parentId;
       this.selectedMenuName = val.parentName || '一级菜单';
@@ -152,10 +154,9 @@ export default {
           const res = this.isEdit 
             ? await updateMenu(this.form._id, this.form)
             : await addMenu(this.form);
-          this.$message({
-            message: res ? '操作成功' : '操作失败',
-            type: res ? 'success' : 'error'
-          });
+          res 
+            ? this.$message.success('操作成功')
+            : this.$message.error('操作失败');
           this.visible = false;
           this.$parent.fetchData();
         } else {
