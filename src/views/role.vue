@@ -61,7 +61,7 @@ const columns = [
 ];
 
 export default {
-  name: 'Role',
+  name: 'sys-role',
   data() {
     return {
       columns,

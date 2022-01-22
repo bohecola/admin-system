@@ -1,9 +1,11 @@
 <template>
   <el-menu
     :default-active="$route.path"
-    text-color="#fff"
-    active-text-color="#2c7fe7"
+    :collapse="$parent.menuCollapse"
+    :collapse-transition="false"
     background-color="#1f2d3d"
+    active-text-color="#2c7fe7"
+    text-color="#fff"
     mode="vertical"
     router
   >
@@ -25,7 +27,7 @@
 
 <script>
 export default {
-  name: 'SideBar',
+  name: 'sidebar',
   computed: {
     activeMenu() {
       const route = this.$route;
@@ -44,6 +46,7 @@ export default {
 
 <style lang="scss" scoped>
   .el-menu {
+    width: 100%;
     height: 100vh;
 
     .el-submenu {

@@ -1,0 +1,115 @@
+<template>
+  <div class="app-topbar">
+    <div class="app-topbar__collapse" @click="collapse">
+      <i :class="[menuCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold']"></i>
+    </div>
+
+    <div class="flex1"></div>
+
+    <!-- 用户信息 -->
+    <div class="app-topbar__user">
+      <el-dropdown trigger="click" :hide-on-click="false" @command="onCommand">
+        <span class="el-dropdown-link">
+          <span class="name">{{ userInfo.username }}</span>
+          <img class="avatar" :src="userInfo.avatar" />
+        </span>
+
+        <template #dropdown>
+          <el-dropdown-menu class="dropdown-menu__user">
+            <el-dropdown-item command="my">个人中心</el-dropdown-item>
+            <el-dropdown-item command="exit">退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'topbar',
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+    // 菜单是否展开
+    menuCollapse() {
+      return this.$store.getters.menuCollapse;
+    },
+    // 用户信息
+    userInfo() {
+      return this.$store.getters.userInfo;
+    }
+  },
+  methods: {
+    collapse() {
+      this.$store.commit('app/COLLAPSE_MENU', !this.menuCollapse);
+    },
+    onCommand(name) {
+      switch(name) {
+        case 'my':
+          this.$router.push('/');
+          break;
+        case 'exit':
+          this.$router.push('/login');
+          break;
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.dropdown-menu__user {
+	width: 120px;
+}
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  background: #fff;
+
+  &__collapse {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    margin-right: 10px;
+
+    i {
+      font-size: 22px;
+      color: #666;
+    }
+  }
+
+  .flex1 {
+    flex: 1
+  }
+
+  &__user {
+    margin-right: 10px;
+    cursor: pointer;
+
+    .el-dropdown-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar {
+      height: 32px;
+      width: 32px;
+      border-radius: 32px;
+    }
+
+    .name {
+      white-space: nowrap;
+      margin-right: 15px;
+    }
+  }
+}
+</style>

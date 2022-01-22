@@ -15,7 +15,7 @@ export function removeToken() {
 }
 
 export function getUser() {
-  return localStorage.getItem(UserKey);
+  return JSON.parse(localStorage.getItem(UserKey));
 }
 
 export function setUser(data) {

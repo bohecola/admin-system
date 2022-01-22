@@ -83,7 +83,7 @@ const columns = [
 ];
 
 export default {
-  name: 'User',
+  name: 'sys-user',
   data() {
     return {
       columns,

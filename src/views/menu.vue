@@ -61,7 +61,7 @@ import { getMenuList, removeMenu, findMenu } from '@/api/sys/menu';
 import MenuDialog from '@/components/sys/menu-dialog';
 
 export default {
-  name: 'Menu',
+  name: 'sys-menu',
   components: {
     MenuDialog
   },
