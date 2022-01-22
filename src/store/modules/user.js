@@ -1,5 +1,12 @@
 import { login } from '@/api/user';
-import { getToken, setToken, setUser, getUser } from '@/utils/auth';
+import { 
+  getToken,
+  setToken,
+  removeToken,
+  setUser,
+  getUser,
+  removeUser 
+} from '@/utils/auth';
 
 const state = {
   token: getToken() || null,
@@ -11,7 +18,7 @@ const mutations = {
     state.token = val;
   },
   SET_USERINFO: (state, val) => {
-    state.userInfo = val;
+    state.info = val;
   }
 };
 
@@ -31,6 +38,17 @@ const actions = {
           console.log(err);
           reject(err);
         })
+    })
+  },
+
+  logout({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      // api => logout
+      commit('SET_TOKEN', '');
+      commit('SET_USERINFO', {});
+      removeToken();
+      removeUser();
+      resolve();
     })
   }
 }

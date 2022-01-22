@@ -1,8 +1,10 @@
 import axios from 'axios';
 import store from '@/store';
+import router from '@/router';
 import { getToken } from '@/utils/auth';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import { Message } from 'element-ui';
 
 NProgress.configure({ showSpinner: false });
 
@@ -20,23 +22,52 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    console.log(error)
-    NProgress.done();
+    console.log(error);
     return Promise.reject(error);
   }
 );
 
 service.interceptors.response.use(
-  response => {
+  res => {
     NProgress.done();
-    const res = response.data;
-    return res;
+    const { data } = res;
+    return data;
   },
-  error => {
-    console.log('err' + error);
+  async (error) => {
     NProgress.done();
+
+    if (error.response) {
+      const { status, config } = error.response;
+
+      switch (status) {
+        case 401:
+          await store.dispatch('user/logout');
+          Message('登录已过期')
+          router.push('/login');
+          break;
+        case 403:
+          // ...
+          Message(`${config.url} 无权限访问`)
+          break;
+
+        case 404:
+          break;
+
+        case 500:
+          // ...
+          break;
+        
+        case 502:
+          // ...
+          break;
+        
+        default:
+          console.log(status, config.url);
+      }
+    }
+
     return Promise.reject(error);
   }
-)
+);
 
 export default service;

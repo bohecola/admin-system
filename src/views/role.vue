@@ -81,7 +81,9 @@ export default {
   methods: {
     // 列表
     async fetchData() {
+      this.loading = true;
       this.tableData = await getRoleList();
+      this.loading = false;
     },
     // 刷新
     handleRefresh() {
