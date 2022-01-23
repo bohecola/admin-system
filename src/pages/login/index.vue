@@ -8,9 +8,7 @@
         :rules="rules"
         :hide-required-asterisk="true"
       >
-        <el-form-item
-          prop="username"
-        >
+        <el-form-item prop="username">
           <el-input
             v-model="loginForm.username"
             placeholder="用户名"
@@ -18,9 +16,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item
-          prop="password"
-        >
+        <el-form-item prop="password">
           <el-input
             type="password"
             v-model="loginForm.password"
@@ -30,9 +26,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item
-          size="small"
-        >
+        <el-form-item size="small">
           <el-button
             type="success"
             :loading="loading"
@@ -74,9 +68,13 @@ export default {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.loading = true;
-          await this.$store.dispatch('user/login', this.loginForm);
-          this.loading = false;
-          this.$router.push('/home');
+          try {
+            await this.$store.dispatch('user/login', this.loginForm);
+            this.loading = false;
+            this.$router.push('/home');
+          } catch(err) {
+            this.loading= false;
+          }
         } else {
           console.log('error submit');
           return false;

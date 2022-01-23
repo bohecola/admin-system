@@ -21,6 +21,7 @@ service.interceptors.request.use(
     NProgress.start();
     return config
   },
+
   error => {
     return Promise.reject(error);
   }
@@ -28,19 +29,26 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   res => {
+
     NProgress.done();
+
     const { data } = res;
+
+    if (data.message) Message.error(data.message);
+    
     return data;
   },
+
   async (error) => {
     NProgress.done();
     if (error.response) {
-      const { status, config } = error.response;
+      console.log(error.response);
+      const { status, config, data } = error.response;
 
       switch (status) {
         case 401:
           await store.dispatch('user/logout');
-          Message('登录已过期')
+          Message('登录已过期');
           router.push('/login');
           break;
         case 403:
@@ -60,6 +68,7 @@ service.interceptors.response.use(
           break;
         
         default:
+          if (data.message) Message.error(data.message)
           console.log(status, config.url);
       }
     }
