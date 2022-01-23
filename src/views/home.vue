@@ -1,7 +1,12 @@
 <template>
   <div class="page-home">
     <p>Page-Home</p>
-    <p>{{ $store.getters.userInfo }}</p>
+    <p>username: {{ $store.getters.userInfo.username }}</p>
+    <p>avatar: {{ $store.getters.userInfo.avatar }}</p>
+    <p>password: {{ $store.getters.userInfo.password }}</p>
+    <p>name: {{ $store.getters.userInfo.name }}</p>
+    <p>createdAt: {{ $store.getters.userInfo.createdAt }}</p>
+    <p>updatedAt: {{ $store.getters.userInfo.updatedAt }}</p>
   </div>
 </template>
 
@@ -15,7 +20,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  p {
-    word-wrap: break-word;
+  .page-home {
+    background-color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    p {
+      word-wrap: break-word;
+    }
   }
 </style>

@@ -1,5 +1,9 @@
+const { clientWidth } = document.documentElement;
+
+const isMini = clientWidth < 768;
+
 const state = {
-  collapse: false
+  collapse: isMini ? true : false
 };
 
 const mutations = {
