@@ -1,4 +1,4 @@
-import { login } from '@/api/user';
+import { login, userInfo } from '@/api/common';
 import { 
   getToken,
   setToken,
@@ -16,13 +16,25 @@ const state = {
 const mutations = {
   SET_TOKEN: (state, val) => {
     state.token = val;
+    setToken(val);
+    
   },
   SET_USERINFO: (state, val) => {
     state.info = val;
+    setUser(val);
+  },
+  CLEAR_TOKEN: (state) => {
+    state.token = null;
+    removeToken();
+  },
+  CLEAR_USER: (state) => {
+    state.info = {};
+    removeUser();
   }
 };
 
 const actions = {
+  // 用户登录
   login({ commit }, loginForm) {
     const { username, password } = loginForm;
     return new Promise((resolve, reject) => {
@@ -30,8 +42,6 @@ const actions = {
         .then(res => {
           commit('SET_TOKEN', res.token);
           commit('SET_USERINFO', res);
-          setToken(res.token);
-          setUser(res);
           resolve();
         })
         .catch(err => {
@@ -41,13 +51,20 @@ const actions = {
     })
   },
 
+  // 用户信息
+  userInfo({ commit }) {
+    return userInfo().then(res => {
+      commit('SET_USERINFO', res)
+      return res;
+    })
+  },
+
+  // 用户退出
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       // api => logout
-      commit('SET_TOKEN', '');
-      commit('SET_USERINFO', {});
-      removeToken();
-      removeUser();
+      commit('CLEAR_TOKEN');
+      commit('CLEAR_USER');
       resolve();
     })
   }

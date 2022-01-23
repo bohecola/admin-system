@@ -22,7 +22,6 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    console.log(error);
     return Promise.reject(error);
   }
 );
@@ -35,7 +34,6 @@ service.interceptors.response.use(
   },
   async (error) => {
     NProgress.done();
-
     if (error.response) {
       const { status, config } = error.response;
 

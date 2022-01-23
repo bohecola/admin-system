@@ -71,7 +71,7 @@ export default {
     async onCommand(name) {
       switch(name) {
         case 'my':
-          this.$router.push('/');
+          this.$router.push('/my/info');
           break;
         case 'exit':
           await this.$store.dispatch('user/logout')

@@ -12,7 +12,7 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: 'home',
+        path: '/home',
         name: 'home',
         component: () => import('@/views/home.vue')
       },
@@ -30,6 +30,11 @@ const routes = [
         path: '/sys/menu',
         name: 'menu',
         component: () => import('@/views/menu.vue')
+      },
+      {
+        path: '/my/info',
+        name: 'info',
+        component: () => import('@/views/info.vue')
       }
     ]
   },
