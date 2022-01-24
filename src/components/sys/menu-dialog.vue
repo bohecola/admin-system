@@ -159,7 +159,6 @@ export default {
     // 文件路径选择
     updateModelValue(val) {
       this.form.viewPath = val;
-      console.log(val);
     },
     // 提交数据
     submit(formName) {

@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     collapseMenu(val) {
-      this.$store.commit('app/COLLAPSE_MENU', val);
+      this.$store.commit('COLLAPSE_MENU', val);
     }
   }
 }

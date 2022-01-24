@@ -41,7 +41,6 @@ const actions = {
       login({ username, password })
         .then(res => {
           commit('SET_TOKEN', res.token);
-          commit('SET_USERINFO', res);
           resolve();
         })
         .catch(err => {

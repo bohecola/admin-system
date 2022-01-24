@@ -71,6 +71,8 @@ export default {
           this.loading = true;
           try {
             await this.$store.dispatch('user/login', this.loginForm);
+            await this.$store.dispatch('user/userInfo');
+            await this.$store.dispatch('permMenu');
             this.loading = false;
             this.$router.push('/home');
           } catch(err) {

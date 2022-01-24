@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     collapse() {
-      this.$store.commit('app/COLLAPSE_MENU', !this.menuCollapse);
+      this.$store.commit('COLLAPSE_MENU', !this.menuCollapse);
     },
     async onCommand(name) {
       switch(name) {

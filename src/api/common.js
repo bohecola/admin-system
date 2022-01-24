@@ -25,3 +25,11 @@ export function userUpdate(data) {
     data
   })
 }
+
+// 权限菜单
+export function permMenu() {
+  return request({
+    url: 'permmenu',
+    method: 'get'
+  })
+}
