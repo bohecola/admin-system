@@ -8,6 +8,8 @@ import {
   removeUser 
 } from '@/utils/auth';
 
+import { resetRouter } from '@/router';
+
 const state = {
   token: getToken() || null,
   info: getUser() || {}
@@ -65,6 +67,7 @@ const actions = {
       commit('CLEAR_USER');
       commit('SET_MENU_GROUP', [], { root: true });
       commit('SET_VIEW_ROUTES', [], { root: true });
+      resetRouter();
       resolve();
     })
   }

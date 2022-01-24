@@ -12,7 +12,13 @@ const routes = [
     path: '/',
     name: 'index',
     redirect: '/home',
-    component: Layout
+    component: Layout,
+    children: [
+      {
+        path: '/my/info',
+        component: () => import('@/views/info')
+      }
+    ]
   },
   {
     path: '/login',
@@ -21,10 +27,12 @@ const routes = [
   }
 ];
 
-const router = new VueRouter({
+const createRouter = () => new VueRouter({
   routes,
-  mode:  'history'
-});
+  mode: 'history'
+})
+
+const router = createRouter();
 
 const requireModules = require.context('../views', false, /.vue$/);
 
@@ -38,6 +46,13 @@ const views = requireModules.keys().reduce((views, modulePath) => {
   return views;
 }, {});
 
+// 解决切换账户后，不刷新页面仍然是上一账户路由的问题 
+export function resetRouter() {
+  const newRouter = createRouter();
+  router.matcher = newRouter.matcher;
+}
+
+// 生成动态路由
 export const addViews = (list, options) => {
   if (!options) {
     options = {}
