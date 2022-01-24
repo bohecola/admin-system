@@ -5,6 +5,13 @@ Vue.use(VueRouter);
 
 import Layout from '@/layout';
 
+// const requireModules = require.context('../views', false, /.vue$/);
+// const modules = requireModules.keys().reduce((modules, modulePath) => {
+//   const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1');
+//   modules[moduleName] = requireModules(modulePath).default;
+//   return modules;
+// }, {});
+
 const routes = [
   {
     path: '/',

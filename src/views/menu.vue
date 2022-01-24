@@ -1,5 +1,5 @@
 <template>
-  <div class="sys-menu">
+  <div class="lite-crud">
     <div class="table-toolbar">
       <el-button size="mini" @click="handleRefresh">刷新</el-button>
       <el-button size="mini" @click="handleAdd" type="primary">新增</el-button>
@@ -7,10 +7,12 @@
     <el-table
       v-loading="loading"
       :data="polyfillTreeData"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      ref="table"
       row-key="_id"
       default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       border
+      @row-click="handleRowClick"
     >
       <el-table-column align="left" width="160" label="name" prop="name" show-overflow-tooltip></el-table-column>
       <el-table-column align="center" width="80" label="type">
@@ -38,11 +40,11 @@
           <el-button
             size="mini"
             type="text"
-            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            @click.stop="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
             type="text"
-            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            @click.stop="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -128,6 +130,10 @@ export default {
     // 弹框
     updateDialogVisible(val) {
       this.dialogVisible = val;
+    },
+    // 行点击
+    handleRowClick(row) {
+      this.$refs.table.toggleRowExpansion(row);
     }
   }
 }

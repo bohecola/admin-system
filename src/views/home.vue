@@ -22,6 +22,7 @@ export default {
 <style lang="scss" scoped>
   .page-home {
     background-color: #fff;
+    height: 100%;
     padding: 20px;
     box-sizing: border-box;
     p {

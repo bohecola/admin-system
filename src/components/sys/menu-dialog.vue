@@ -52,6 +52,12 @@
       <el-form-item label="icon" prop="icon">
         <el-input v-model.trim="form.icon" placeholder="please select icon"></el-input>
       </el-form-item>
+      <el-form-item v-if="form.type === 1" label="文件路径" prop="viewPath">
+        <lite-menu-file
+          :modelValue="form.viewPath"
+          @update:modelValue="updateModelValue"  
+        />
+      </el-form-item>
     </el-form>
 
     <span slot="footer">
@@ -63,9 +69,13 @@
 
 <script>
 import { addMenu, updateMenu } from '@/api/sys/menu';
+import LiteMenuFile from '@/components/sys/file';
 
 export default {
   name: "MenuDialog",
+  components: {
+    LiteMenuFile
+  },
   props: {
     dialogVisible: {
       type: Boolean,
@@ -100,10 +110,10 @@ export default {
   },
   watch: {
     dialogData(val) {
-      const { _id = null, name = '', path = '', type = 0,  icon = null } = val;
+      const { _id = null, name = '', path = '', viewPath = '', type = 0,  icon = null } = val;
 
       // (dialogData)val有值，就是数据的回显
-      this.form = { _id, name, path, icon, type };
+      this.form = { _id, name, path, viewPath, icon, type };
       if (val.parentId) this.form.parentId = val.parentId;
       this.selectedMenuName = val.parentName || '一级菜单';
     },
@@ -145,6 +155,11 @@ export default {
     onDialogClosed() {
       this.$refs['form'].clearValidate();
       this.$refs.tree.setCurrentKey(null);
+    },
+    // 文件路径选择
+    updateModelValue(val) {
+      this.form.viewPath = val;
+      console.log(val);
     },
     // 提交数据
     submit(formName) {

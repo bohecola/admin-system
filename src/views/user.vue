@@ -1,5 +1,5 @@
 <template>
-  <div class="page-sys-user">
+  <div class="lite-crud">
     <div class="table-toolbar">
       <el-button size="mini" @click="handleRefresh">刷新</el-button>
       <el-button size="mini" @click="handleAdd" type="primary">新增</el-button>
@@ -130,7 +130,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

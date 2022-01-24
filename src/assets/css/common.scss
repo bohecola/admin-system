@@ -8,9 +8,18 @@
   font-size: .75rem;
 }
 
-/* 表格上方工具栏 */
-.table-toolbar {
-  margin-bottom: 12px;
+/* crud表单 */
+.lite-crud {
+  height: 100%;
+  position: relative;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #fff;
+  overflow: hidden;
+
+  .table-toolbar {
+    margin-bottom: 12px;
+  }
 }
 
 .scroller {
