@@ -10,7 +10,10 @@ import {
   removePermission,
 } from '@/utils/auth';
 
+import { formatDataTree } from '@/utils/utils';
 import { permMenu } from '@/api/common';
+
+import { addViews } from '@/router';
 
 const state = {
   // 视图路由, type=1
@@ -42,6 +45,8 @@ const mutations = {
   },
   // 设置视图路由
   SET_VIEW_ROUTES: (state, list) => {
+    addViews(list);
+
     state.routes = list;
     setViewRoutes(list);
   },
@@ -57,8 +62,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       permMenu()
         .then(res => {
-          console.log(res);
-          resolve()
+          const menuGroup =  formatDataTree(res);
+          // 设置菜单组
+          commit('SET_MENU_GROUP', menuGroup);
+          // 设置视图路由
+          commit(
+            'SET_VIEW_ROUTES',
+            res.filter(e => e.type === 1)
+          );
+
+          resolve(menuGroup);
         })
         .catch(err => {
           reject(err);

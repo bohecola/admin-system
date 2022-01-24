@@ -12,7 +12,15 @@ const mutations = {
   }
 };
 
-const actions = {};
+const actions = {
+  async appLoad({ getters, dispatch, commit }) {
+    if (getters.token) {
+      await dispatch('permMenu');
+
+      dispatch('user/userInfo');
+    }
+  }
+};
 
 export default {
   state,

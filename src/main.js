@@ -25,6 +25,8 @@ Vue.prototype.$utils = utils;
 
 Vue.config.productionTip = false;
 
+store.dispatch('appLoad');
+
 new Vue({
   router,
   store,

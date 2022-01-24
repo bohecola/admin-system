@@ -99,13 +99,24 @@ export default {
         &.is-active {
           ::v-deep .el-submenu__title {
             // #192431
-            background-color: rgba(0, 0, 0, 0.2)!important;
+            // background-color: #4165d7!important;
+            background-color: rgba(0, 0, 0, 0.2) !important;
+            // &:hover {
+            //   background-color: #4165d7!important;
+            //   color: #fff;
+            // }
           }
         }
       } 
 
       &-item {
+        // &:hover {
+        //   background-color: #4165d7!important;
+        //   color: #fff;
+        // }
         &.is-active {
+          // rgba(0, 0, 0, 0.2)
+          // background-color: #4165d7 !important;
           background-color: rgba(0, 0, 0, 0.2) !important;
         }
       }

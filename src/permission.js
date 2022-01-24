@@ -1,7 +1,7 @@
 import router from './router';
 import { getToken } from '@/utils/auth';
 
-const whiteList = ['/login']
+const whiteList = ['/login'];
 
 router.beforeEach((to, from, next) => {
   const hasToken = getToken();

@@ -63,6 +63,8 @@ const actions = {
       // api => logout
       commit('CLEAR_TOKEN');
       commit('CLEAR_USER');
+      commit('SET_MENU_GROUP', [], { root: true });
+      commit('SET_VIEW_ROUTES', [], { root: true });
       resolve();
     })
   }
