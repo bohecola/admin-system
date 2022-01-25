@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="re-sub-menu">
     <el-menu-item
       v-if="!data.children"
       :index="data.path"
@@ -31,16 +31,16 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+  .el-menu--collapse > div > .el-submenu > .el-submenu__title span {
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    visibility: hidden;
+    display: inline-block;
+  }
 
-.el-menu--collapse > div > .el-submenu > .el-submenu__title span {
-  height: 0;
-  width: 0;
-  overflow: hidden;
-  visibility: hidden;
-  display: inline-block;
-}
-.el-menu--collapse > div > .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
-  display: none;
-}
+  .el-menu--collapse > div > .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
+    display: none !important;
+  }
 </style>
