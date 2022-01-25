@@ -16,27 +16,24 @@
         mode="vertical"
         router
       >
-        <el-menu-item index="/home">
-          <i class="el-icon-monitor"></i>
-          <span slot="title">首页</span>
-        </el-menu-item>
-        <el-submenu index="/sys" popper-append-to-body>
-          <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span>系统管理</span>
-          </template>
-          <el-menu-item index="/sys/user">用户列表</el-menu-item>
-          <el-menu-item index="/sys/role">角色列表</el-menu-item>
-          <el-menu-item index="/sys/menu">菜单列表</el-menu-item>
-        </el-submenu>
+        <re-sub-menu
+          v-for="e in menuList"
+          :key="e._id"
+          :data="e"
+        ></re-sub-menu>
       </el-menu>
     </div>
   </div>
 </template>
 
 <script>
+import ReSubMenu from './ReSubMenu';
+
 export default {
   name: 'sidebar',
+  components: {
+    ReSubMenu
+  },
   computed: {
     activeMenu() {
       const route = this.$route;
@@ -51,6 +48,9 @@ export default {
     },
     Logo() {
       return require('@/assets/logo.png');
+    },
+    menuList() {
+      return this.$store.getters.menuList;
     }
   },
   methods: {
@@ -95,7 +95,7 @@ export default {
       width: 100%;
       height: 100%;
 
-      .el-submenu {
+      ::v-deep .el-submenu {
         &.is-active {
           ::v-deep .el-submenu__title {
             // #192431
@@ -109,7 +109,7 @@ export default {
         }
       } 
 
-      &-item {
+      ::v-deep &-item {
         // &:hover {
         //   background-color: #4165d7!important;
         //   color: #fff;

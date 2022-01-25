@@ -20,22 +20,22 @@
           {{ scope.row.type | menuTypeFormat }}
         </template>
       </el-table-column>
-      <el-table-column align="center" width="180" label="path" prop="path"></el-table-column>
-      <el-table-column align="center" width="80" label="icon" prop="icon"></el-table-column>
-      <el-table-column align="center" width="80" label="hidden" prop="hidden"></el-table-column>
-      <el-table-column align="center" width="80" label="status" prop="status"></el-table-column>
-      <el-table-column align="center" width="80" label="sort" prop="sort"></el-table-column>
-      <el-table-column align="center" width="160" label="createdAt" prop="createdAt">
+      <el-table-column align="center" min-width="180" label="path" prop="path"></el-table-column>
+      <el-table-column align="center" min-width="80" label="icon" prop="icon"></el-table-column>
+      <el-table-column align="center" min-width="80" label="hidden" prop="hidden"></el-table-column>
+      <el-table-column align="center" min-width="80" label="status" prop="status"></el-table-column>
+      <el-table-column align="center" min-width="80" label="sort" prop="sort"></el-table-column>
+      <el-table-column align="center" min-width="160" label="createdAt" prop="createdAt">
         <template slot-scope="scope">
           {{ scope.row.createdAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
-      <el-table-column align="center" width="160" label="updatedAt" prop="updatedAt">
+      <el-table-column align="center" min-width="160" label="updatedAt" prop="updatedAt">
         <template slot-scope="scope">
           {{ scope.row.updatedAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" width="160" align="center" label="operate">
+      <el-table-column fixed="right" min-width="160" align="center" label="operate">
         <template slot-scope="scope">
           <el-button
             size="mini"

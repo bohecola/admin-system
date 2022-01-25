@@ -70,7 +70,8 @@ const actions = {
             'SET_VIEW_ROUTES',
             res.filter(e => e.type === 1)
           );
-
+          // 设置菜单
+          commit('SET_MENU_LIST');
           resolve(menuGroup);
         })
         .catch(err => {

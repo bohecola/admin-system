@@ -15,7 +15,7 @@
         :align="col.align">
 
         <template slot-scope="scope">
-          <template v-if="col.prop === 'roleName'">
+          <template v-if="col.prop === 'roleName' && scope.row[col.prop]">
             <el-tag
               v-for="roleName in scope.row[col.prop].split(',')"
               :key="roleName"
