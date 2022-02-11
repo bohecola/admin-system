@@ -11,7 +11,7 @@
         <topbar />
       </div>
 
-      <div v-if="false" class="page_layout__process">
+      <div v-if="false" class="page-layout__process">
         <!-- 进程栏 -->
       </div>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="re-sub-menu">
     <el-menu-item
-      v-if="!data.children"
+      v-if="!data.children && !data.hidden"
       :index="data.path"
     >
       <i v-if="data.icon" :class="data.icon"></i>

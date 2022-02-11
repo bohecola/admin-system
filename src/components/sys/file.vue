@@ -11,12 +11,21 @@
 </template>
 
 <script>
+// 公共模块
 const requireModules = require.context('../../views', false, /.vue$/);
-
-const files = requireModules.keys().reduce((files, modulePath) => {
+const commonFiles = requireModules.keys().reduce((files, modulePath) => {
   files.push(requireModules.resolve(modulePath));
   return files;
 }, []);
+
+// 文章模块
+const requireArticleModules = require.context('../../article/views', false, /.vue$/);
+const articleFiles = requireArticleModules.keys().reduce((files, modulePath) => {
+  files.push(requireArticleModules.resolve(modulePath));
+  return files;
+}, []);
+
+const files = [...commonFiles, ...articleFiles];
 
 const list = files.map(item => ({ value: item.replace('./src/', '') }));
 

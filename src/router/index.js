@@ -30,13 +30,13 @@ const routes = [
 const createRouter = () => new VueRouter({
   routes,
   mode: 'history'
-})
+});
 
 const router = createRouter();
 
+// 公共模块
 const requireModules = require.context('../views', false, /.vue$/);
-
-const views = requireModules.keys().reduce((views, modulePath) => {
+const commonViews = requireModules.keys().reduce((views, modulePath) => {
   // request为../views文件夹下面匹配文件的相对路径
   // resolve()传入request，返回这个匹配文件相对于整个工程的相对路径
   // 对返回的路径进行正则处理，得到viewPath
@@ -45,6 +45,19 @@ const views = requireModules.keys().reduce((views, modulePath) => {
   views[viewPath] = requireModules(modulePath);
   return views;
 }, {});
+
+// 文章模块
+const requireArticleModules = require.context('../article/views', false, /.vue$/);
+const articleViews = requireArticleModules.keys().reduce((views, modulePath) => {
+  const viewPath = requireArticleModules.resolve(modulePath).replace('./src/', '');
+  views[viewPath] = requireArticleModules(modulePath);
+  return views;
+}, {});
+
+const views = {
+  ...commonViews,
+  ...articleViews
+};
 
 // 解决切换账户后，不刷新页面仍然是上一账户路由的问题 
 export function resetRouter() {
