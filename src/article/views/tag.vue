@@ -28,6 +28,24 @@
             </span>
           </template>
 
+          <template v-else-if="col.prop === 'creator' && scope.row[col.prop]">
+            <div :style="{ display: 'flex', alignItems: 'center', justifyContent: 'center' }">
+              <img
+                :style="{
+                  height: '32px',
+                  borderRadius: '50%',
+                  marginRight: '10px',
+                  objectFit: 'cover'
+                }"
+                :src="scope.row[col.prop].avatar"
+                :alt="scope.row[col.prop].username"
+              >
+              <span>
+                {{ scope.row[col.prop].username }}
+              </span>
+            </div>
+          </template>
+
           <template v-else>
             {{ scope.row[col.prop] }}
           </template>

@@ -17,7 +17,7 @@
         :align="col.align">
 
         <template slot-scope="scope">
-          <template v-if="scope.row[col.prop] && col.prop === 'tags'">
+          <template v-if="col.prop === 'tags' && scope.row[col.prop]">
             <span
               v-for="tag in scope.row[col.prop]"
               :key="tag.name"
@@ -34,6 +34,24 @@
               }">
               {{ tag.name }}
             </span>
+          </template>
+
+          <template v-else-if="col.prop === 'author' && scope.row[col.prop]">
+            <div :style="{ display: 'flex', alignItems: 'center', justifyContent: 'center' }">
+              <img
+                :style="{
+                  height: '32px',
+                  borderRadius: '50%',
+                  marginRight: '10px',
+                  objectFit: 'cover'
+                }"
+                :src="scope.row[col.prop].avatar"
+                :alt="scope.row[col.prop].username"
+              >
+              <span>
+                {{ scope.row[col.prop].username }}
+              </span>
+            </div>
           </template>
 
           <template v-else>
@@ -80,8 +98,8 @@ const columns = [
   { prop: 'title', label: '标题', width: '100', align: 'center' },
   { prop: 'category', label: '目录', width: '100', align: 'center' },
   { prop: 'tags', label: '标签', width: '100', align: 'center' },
-  { prop: 'status', label: '状态', width: '100', align: 'center' },
-  { prop: 'author', label: '作者', width: '100', align: 'center' }
+  { prop: 'status', label: '状态', width: '80', align: 'center' },
+  { prop: 'author', label: '作者', width: '160', align: 'center' }
 ];
 
 export default {
