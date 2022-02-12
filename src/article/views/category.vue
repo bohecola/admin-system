@@ -8,6 +8,7 @@
     <el-table
       v-loading="loading"
       :data="tableData"
+      :header-cell-style="{background: '#ebeef5'}"
       border>
       <el-table-column v-for="col in columns"
         :key="col.prop"

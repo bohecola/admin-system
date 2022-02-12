@@ -101,7 +101,7 @@ export default {
       // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
 
       const formData = new FormData();
-      formData.append('image', files[0]);
+      formData.append('file', files[0]);
 
       const res = await uploadFile(formData);
       const { url, fileName } = res;

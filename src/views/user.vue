@@ -7,6 +7,7 @@
     <el-table
       v-loading="loading"
       :data="tableData"
+      :header-cell-style="{background: '#ebeef5'}"
       border>
       <el-table-column v-for="col in columns"
         :key="col.prop"
@@ -15,12 +16,13 @@
         :align="col.align">
 
         <template slot-scope="scope">
-          <template v-if="col.prop === 'roleName' && scope.row[col.prop]">
+          <template v-if="scope.row[col.prop] && col.prop === 'roleName'">
             <el-tag
               v-for="roleName in scope.row[col.prop].split(',')"
               :key="roleName"
-              :style="{ margin: '2px' }"
               size="mini"
+              :style="{ margin: '2px', borderColor: '#4165d7' }"
+              color="#4165d7"
               effect="dark">
               {{ roleName }}
             </el-tag>
@@ -75,11 +77,11 @@ import { getUserList, removeUser } from '@/api/sys/user';
 import UserDialog from '@/components/sys/user-dialog';
 
 const columns = [
-  { prop: 'username', label: 'username', width: '100', align: 'center' },
-  { prop: 'password', label: 'password', width: '100', align: 'center' },
-  { prop: 'name', label: 'name', width: '100', align: 'center' },
-  { prop: 'roleName', label: 'roleName', width: '160', align: 'center' },
-  { prop: 'desc', label: 'desc', width: '160', align: 'center' }
+  { prop: 'username', label: '用户名称', width: '100', align: 'center' },
+  { prop: 'password', label: '密码', width: '100', align: 'center' },
+  { prop: 'name', label: '姓名', width: '100', align: 'center' },
+  { prop: 'roleName', label: '角色', width: '160', align: 'center' },
+  { prop: 'desc', label: '描述', width: '160', align: 'center' }
 ];
 
 export default {

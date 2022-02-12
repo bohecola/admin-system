@@ -12,26 +12,26 @@
       :inline="false"
       size="medium"
       label-width="80px">
-      <el-form-item label="name" prop="name">
+      <el-form-item label="名称" prop="name">
         <el-input
           v-model.trim="form.name"
-          placeholder="please input name"
+          placeholder="请填写名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="label" prop="label">
+      <el-form-item label="标识" prop="label">
         <el-input
           v-model.trim="form.label"
-          placeholder="please input label"
+          placeholder="请填写标识"
         ></el-input>
       </el-form-item>
-      <el-form-item label="remark" prop="remark">
+      <el-form-item label="备注" prop="remark">
         <el-input
           v-model.trim="form.remark"
           type="textarea"
-          placeholder="please input remark"
+          placeholder="请填写备注"
         ></el-input>
       </el-form-item>
-      <el-form-item label="menus" prop="menus">
+      <el-form-item label="菜单权限" prop="menus">
         <el-input
           placeholder="输入关键字进行过滤"
           v-model="filterText"

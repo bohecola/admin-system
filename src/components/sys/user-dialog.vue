@@ -12,44 +12,50 @@
       :inline="false"
       size="medium"
       label-width="90px">
-      <el-form-item label="avatar" prop="avatar">
-        <el-input
-          v-model.trim="form.avatar"
-          placeholder="please upload avatar"
-        ></el-input>
+      <el-form-item label="头像" prop="avatar">
+        <el-upload
+          class="avatar-uploader"
+          :action="`${base}/uploadFile`"
+          :headers="headers"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
-      <el-form-item label="username" prop="username">
+      <el-form-item label="用户名" prop="username">
         <el-input 
           v-model.trim="form.username"
-          placeholder="please input username"
+          placeholder="请填写用户名"
         ></el-input>
       </el-form-item>
-      <el-form-item label="password" prop="password">
+      <el-form-item label="密码" prop="password">
         <el-input
           v-model="form.password"
-          placeholder="please input password"
+          placeholder="请填写密码"
           show-password
         ></el-input>
       </el-form-item>
-      <el-form-item label="name" prop="name">
+      <el-form-item label="姓名" prop="name">
         <el-input
           v-model.trim="form.name"
-          placeholder="please input name"
+          placeholder="请填写姓名"
         ></el-input>
       </el-form-item>
-      <el-form-item label="desc" prop="desc">
+      <el-form-item label="描述" prop="desc">
         <el-input
           v-model.trim="form.desc"
-          placeholder="please input desc"
+          placeholder="请填写描述"
           type="textarea"
           :rows="4"
         ></el-input>
       </el-form-item>
-      <el-form-item label="roles" prop="roles">
+      <el-form-item label="角色" prop="roles">
         <el-select
           v-model="form.roles"
           multiple
-          placeholder="please select">
+          placeholder="请选择">
           <el-option
             v-for="item in roleList"
             :key="item._id"
@@ -64,12 +70,12 @@
       <el-button size="mini" type="primary" @click="submit('form')">确定</el-button>
     </span>
   </el-dialog>
-  
 </template>
 
 <script>
 import { addUser, updateUser, findUser } from '@/api/sys/user';
 import { getRoleList } from '@/api/sys/role';
+import base from '@/utils/base';
 
 export default {
   name: 'UserDialog',
@@ -89,7 +95,9 @@ export default {
   },
   data() {
     return {
+      base,
       loading: false,
+      imageUrl: '',
       form: {
         avatar: '',
         username: '',
@@ -113,6 +121,11 @@ export default {
       set(val) {
         this.$emit('update:dialogVisible', val);
       }
+    },
+    headers() {
+      return {
+        'Authorization': localStorage.getItem('access_token')
+      };
     }
   },
   watch: {
@@ -124,6 +137,7 @@ export default {
           const res = await findUser(this.userId);
           const { _id, avatar, username, password, name, desc, roles } = res;
           this.form = { _id, avatar, username, password, name, desc, roles };
+          if (avatar) this.imageUrl = avatar;
           this.loading = false;
         } else {
           if (this.form._id) delete this.form._id;
@@ -135,6 +149,23 @@ export default {
   methods: {
     onDialogClosed() {
       this.$refs['form'].resetFields();
+      this.imageUrl = '';
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.form.avatar = res.url;
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
     },
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {

@@ -8,7 +8,16 @@
       label-width="80px"
     >
       <el-form-item label="头像" prop="avatar">
-        <el-input v-model="form.avatar"></el-input>
+        <el-upload
+          class="avatar-uploader"
+          :action="`${base}/uploadFile`"
+          :headers="headers"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
       </el-form-item>
       <el-form-item label="用户名">
         <el-input
@@ -36,35 +45,47 @@
 
 <script>
 import { userUpdate } from '@/api/common';
+import base from '@/utils/base';
 
 export default {
   name: 'sys-info',
   data() {
     return {
+      base,
       saving: false,
       form: {
+        avatar: '',
         username: '',
         password: ''
-      }
+      },
+      imageUrl: ''
+    }
+  },
+  computed: {
+    userInfo() {
+      return this.$store.getters.userInfo;
+    },
+    headers() {
+      return {
+        'Authorization': localStorage.getItem('access_token')
+      };
     }
   },
   mounted() {
     this.form.username = this.userInfo.username;
     this.form.password = this.userInfo.password;
-  },
-  computed: {
-    userInfo() {
-      return this.$store.getters.userInfo;
-    }
+    this.form.avatar = this.userInfo.avatar;
+    if (this.userInfo.avatar) this.imageUrl = this.userInfo.avatar;
   },
   methods: {
     async save() {
       this.saving = true;
 
-      const { username, password } = this.form;
+      const { username, password, avatar } = this.form;
 
       try {
-        await userUpdate({ 
+        await userUpdate({
+          avatar, 
           username,
           password 
         });
@@ -75,6 +96,22 @@ export default {
         this.saving = false;
         this.$message.error(err.message);
       }
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.form.avatar = res.url;
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG PNG 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
     }
   }
 }

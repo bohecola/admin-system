@@ -8,6 +8,7 @@
     <el-table
       v-loading="loading"
       :data="tableData"
+      :header-cell-style="{background: '#ebeef5'}"
       border>
       <el-table-column v-for="col in columns"
         :key="col.prop"
@@ -16,7 +17,28 @@
         :align="col.align">
 
         <template slot-scope="scope">
-          {{ scope.row[col.prop] }}
+          <template v-if="scope.row[col.prop] && col.prop === 'tags'">
+            <span
+              v-for="tag in scope.row[col.prop]"
+              :key="tag.name"
+              :style="{
+                display: 'inline-block',
+                margin: '2px',
+                padding: '0 6px',
+                color: '#fff',
+                fontSize: '12px',
+                lineHeight: '18px',
+                borderRadius: '2px',
+                textAlign: 'center',
+                backgroundColor: tag.color
+              }">
+              {{ tag.name }}
+            </span>
+          </template>
+
+          <template v-else>
+            {{ scope.row[col.prop] }}
+          </template>
         </template>
 
       </el-table-column>

@@ -7,6 +7,7 @@
     <el-table
       v-loading="loading"
       :data="tableData"
+      :header-cell-style="{background: '#ebeef5'}"
       border>
       <el-table-column v-for="col in columns"
         :prop="col.prop"
@@ -15,17 +16,17 @@
         :min-width="col.width"
         :align="col.align">
       </el-table-column>
-      <el-table-column align="center" label="createdAt" min-width="160">
+      <el-table-column align="center" label="创建时间" min-width="160">
         <template slot-scope="scope">
           {{ scope.row.createdAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="updatedAt" min-width="160">
+      <el-table-column align="center" label="更新时间" min-width="160">
         <template slot-scope="scope">
           {{ scope.row.updatedAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="operate" min-width="160">
+      <el-table-column align="center" label="操作" min-width="160">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -55,9 +56,9 @@ import { getRoleList, removeRole, findRole } from '@/api/sys/role';
 import RoleDialog from '@/components/sys/role-dialog';
 
 const columns = [
-  { prop: 'name', label: 'name', width: '80', align: 'center' },
-  { prop: 'label', label: 'label', width: '80', align: 'center' },
-  { prop: 'remark', label: 'remark', width: '160', align: 'center' }
+  { prop: 'name', label: '名称', width: '80', align: 'center' },
+  { prop: 'label', label: '标签', width: '80', align: 'center' },
+  { prop: 'remark', label: '备注', width: '160', align: 'center' }
 ];
 
 export default {

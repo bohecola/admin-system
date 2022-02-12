@@ -111,7 +111,8 @@ export default {
       border-radius: 3px;
 
       & > div {
-        height: 100%;
+        min-height: 100%;
+        overflow: auto;
       }
     }
 

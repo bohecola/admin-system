@@ -12,13 +12,13 @@
       :inline="false"
       size="medium"
       label-width="90px">
-      <el-form-item label="name" prop="name">
+      <el-form-item label="名称" prop="name">
         <el-input 
           v-model.trim="form.name"
-          placeholder="please input name"
+          placeholder="请输入标签名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="color" prop="color">
+      <el-form-item label="颜色" prop="color">
         <el-color-picker v-model="form.color"></el-color-picker>
       </el-form-item>
     </el-form>

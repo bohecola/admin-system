@@ -8,34 +8,45 @@
       v-loading="loading"
       :data="polyfillTreeData"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      :header-cell-style="{background: '#ebeef5'}"
       ref="table"
       row-key="_id"
-      default-expand-all
       border
+      max-height="500"
       @row-click="handleRowClick"
     >
-      <el-table-column align="left" width="160" label="name" prop="name" show-overflow-tooltip></el-table-column>
-      <el-table-column align="center" width="80" label="type">
+      <el-table-column align="left" width="160" label="名称" prop="name" show-overflow-tooltip></el-table-column>
+      <el-table-column align="center" min-width="80" label="图标">
         <template slot-scope="scope">
-          {{ scope.row.type | menuTypeFormat }}
+          <i :class="scope.row.icon"></i>
         </template>
       </el-table-column>
-      <el-table-column align="center" min-width="180" label="path" prop="path"></el-table-column>
-      <el-table-column align="center" min-width="80" label="icon" prop="icon"></el-table-column>
-      <el-table-column align="center" min-width="80" label="hidden" prop="hidden"></el-table-column>
-      <el-table-column align="center" min-width="80" label="status" prop="status"></el-table-column>
-      <el-table-column align="center" min-width="80" label="sort" prop="sort"></el-table-column>
-      <el-table-column align="center" min-width="160" label="createdAt" prop="createdAt">
+      <el-table-column align="center" width="80" label="类型">
+        <template slot-scope="scope">
+          <el-tag
+            size="mini"
+            :style="{ borderColor: '#4165d7' }"
+            color="#4165d7"
+            effect="dark">
+            {{ scope.row.type | menuTypeFormat }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" min-width="180" label="节点路由" prop="path"></el-table-column>
+      <el-table-column align="center" min-width="80" label="隐藏" prop="hidden"></el-table-column>
+      <el-table-column align="center" min-width="80" label="状态" prop="status"></el-table-column>
+      <el-table-column align="center" min-width="80" label="排序" prop="sort"></el-table-column>
+      <el-table-column align="center" min-width="160" label="创建时间" prop="createdAt">
         <template slot-scope="scope">
           {{ scope.row.createdAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
-      <el-table-column align="center" min-width="160" label="updatedAt" prop="updatedAt">
+      <el-table-column align="center" min-width="160" label="更新时间" prop="updatedAt">
         <template slot-scope="scope">
           {{ scope.row.updatedAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" min-width="160" align="center" label="operate">
+      <el-table-column fixed="right" min-width="160" align="center" label="操作">
         <template slot-scope="scope">
           <el-button
             size="mini"

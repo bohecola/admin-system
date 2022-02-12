@@ -12,7 +12,7 @@
       size="medium"
       label-width="80px"
     >
-      <el-form-item label="type" prop="type">
+      <el-form-item label="类型" prop="type">
         <el-radio-group v-model="form.type">
           <el-radio
             v-for="item in menuTypeOptions"
@@ -21,10 +21,10 @@
           >{{item.text}}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="name" prop="name">
-        <el-input v-model.trim="form.name" placeholder="please input name"></el-input>
+      <el-form-item label="节点名称" prop="name">
+        <el-input v-model.trim="form.name" placeholder="请输入节点名称"></el-input>
       </el-form-item>
-      <el-form-item label="parent" prop="parentId">
+      <el-form-item label="上级节点" prop="parentId">
         <el-popover
           width="360"
           placement="bottom"
@@ -46,11 +46,11 @@
           <el-input v-model="selectedMenuName" readonly placeholder="please select" slot="reference"></el-input>
         </el-popover>        
       </el-form-item>
-      <el-form-item v-if="form.type === 1" label="path" prop="path">
+      <el-form-item v-if="form.type === 1" label="节点路由" prop="path">
         <el-input v-model="form.path" placeholder="please input path"></el-input>
       </el-form-item>
-      <el-form-item label="icon" prop="icon">
-        <el-input v-model.trim="form.icon" placeholder="please select icon"></el-input>
+      <el-form-item label="图标" prop="icon">
+        <el-input v-model.trim="form.icon" placeholder="清输入图标名称"></el-input>
       </el-form-item>
       <el-form-item v-if="form.type === 1" label="文件路径" prop="viewPath">
         <lite-menu-file
@@ -58,10 +58,10 @@
           @update:modelValue="updateModelValue"  
         />
       </el-form-item>
-      <el-form-item label="hidden" prop="hidden">
-        <el-switch v-model="form.hidden" active-color="#13ce66" />
+      <el-form-item label="隐藏" prop="hidden">
+        <el-switch v-model="form.hidden" active-color="#4165d7" />
       </el-form-item>
-      <el-form-item label="sort" prop="sort">
+      <el-form-item label="排序" prop="sort">
         <el-input-number
           v-model="form.sort"
           controls-position="right"

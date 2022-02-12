@@ -12,10 +12,10 @@
       :inline="false"
       size="medium"
       label-width="90px">
-      <el-form-item label="name" prop="name">
+      <el-form-item label="名称" prop="name">
         <el-input 
           v-model.trim="form.name"
-          placeholder="please input name"
+          placeholder="请输入目录名称"
         ></el-input>
       </el-form-item>
     </el-form>
