@@ -64,7 +64,8 @@ import { getCategoryList, removeCategory } from '@/api/article/category';
 import CategoryDialog from '../components/category-dialog';
 
 const columns = [
-  { prop: 'name', label: '目录名', width: '160', align: 'center' }
+  { prop: 'name', label: '目录名', width: '160', align: 'center' },
+  { prop: 'creator', label: '创建人', width: '160', align: 'center' }
 ];
 
 export default {

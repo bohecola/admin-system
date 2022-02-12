@@ -79,6 +79,7 @@ import TagDialog from '../components/tag-dialog';
 const columns = [
   { prop: 'name', label: '标签名', width: '160', align: 'center' },
   { prop: 'color', label: '颜色', width: '160', align: 'center' },
+  { prop: 'creator', label: '创建人', width: '160', align: 'center' }
 ];
 
 export default {
