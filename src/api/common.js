@@ -33,3 +33,12 @@ export function permMenu() {
     method: 'get'
   })
 }
+
+// 文件上传
+export function uploadFile(data) {
+  return request({
+    url: 'uploadFile',
+    method: 'post',
+    data
+  })
+}

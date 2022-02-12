@@ -48,11 +48,19 @@
         </template>
       </el-table-column>
     </el-table>
+    <CategoryDialog
+      ref="userDialog"
+      :dialogVisible="dialogVisible"
+      :isEdit="isEdit"
+      :categoryId="categoryId"
+      @update:dialogVisible="updateDialogVisible"
+    />
   </div>
 </template>
 
 <script>
-import { getUserList } from '@/api/sys/user';
+import { getCategoryList, removeCategory } from '@/api/article/category';
+import CategoryDialog from '../components/category-dialog';
 
 const columns = [
   { prop: 'name', label: '目录名', width: '160', align: 'center' }
@@ -60,12 +68,17 @@ const columns = [
 
 export default {
   name: 'category',
+  components: {
+    CategoryDialog
+  },
   data() {
     return {
       columns,
+      tableData: [],
       loading: false,
       isEdit: false,
-      tableData: []
+      dialogVisible: false,
+      categoryId: null
     }
   },
   mounted() {
@@ -74,22 +87,29 @@ export default {
   methods: {
     async fetchData() {
       this.loading = true;
-      this.tableData = await getUserList();
+      this.tableData = await getCategoryList();
       this.loading = false;
     },
     handleAdd() {
       this.isEdit = false;
+      this.categoryId = null;
+      this.dialogVisible = true;
     },
     handleEdit(index, row) {
       this.isEdit = true;
+      this.categoryId = row._id;
+      this.dialogVisible = true;
     },
     async handleDelete(index, row) {
-      await removeUser(row._id);
+      await removeCategory(row._id);
       this.$message.success('删除成功');
       this.fetchData();
     },
     handleRefresh() {
       this.fetchData();
+    },
+    updateDialogVisible(val) {
+      this.dialogVisible = val;
     }
   }
 }

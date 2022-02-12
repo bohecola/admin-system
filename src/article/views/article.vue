@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { getUserList } from '@/api/sys/user';
+import { getArticleList, removeArticle } from '@/api/article/article';
 
 const columns = [
   { prop: 'title', label: '标题', width: '100', align: 'center' },
@@ -63,7 +63,7 @@ const columns = [
 ];
 
 export default {
-  name: 'article',
+  name: 'article-list',
   data() {
     return {
       columns,
@@ -78,7 +78,7 @@ export default {
   methods: {
     async fetchData() {
       this.loading = true;
-      this.tableData = await getUserList();
+      this.tableData = await getArticleList();
       this.loading = false;
     },
     handleAdd() {
@@ -87,10 +87,10 @@ export default {
     },
     handleEdit(index, row) {
       this.isEdit = true;
-      this.$router.push('/article/edit');
+      this.$router.push(`/article/edit/${row._id}`);
     },
     async handleDelete(index, row) {
-      await removeUser(row._id);
+      await removeArticle(row._id);
       this.$message.success('删除成功');
       this.fetchData();
     },

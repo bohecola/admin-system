@@ -58,6 +58,17 @@
           @update:modelValue="updateModelValue"  
         />
       </el-form-item>
+      <el-form-item label="hidden" prop="hidden">
+        <el-switch v-model="form.hidden" active-color="#13ce66" />
+      </el-form-item>
+      <el-form-item label="sort" prop="sort">
+        <el-input-number
+          v-model="form.sort"
+          controls-position="right"
+          size="small"
+          :min="0"
+        ></el-input-number>
+      </el-form-item>
     </el-form>
 
     <span slot="footer">
@@ -110,10 +121,10 @@ export default {
   },
   watch: {
     dialogData(val) {
-      const { _id = null, name = '', path = '', viewPath = '', type = 0,  icon = null } = val;
+      const { _id = null, name = '', path = '', viewPath = '', type = 0,  icon = null, hidden = false, sort = 0 } = val;
 
       // (dialogData)val有值，就是数据的回显
-      this.form = { _id, name, path, viewPath, icon, type };
+      this.form = { _id, name, path, viewPath, icon, type, hidden, sort };
       if (val.parentId) this.form.parentId = val.parentId;
       this.selectedMenuName = val.parentName || '一级菜单';
     },

@@ -16,7 +16,20 @@
         :align="col.align">
 
         <template slot-scope="scope">
-          {{ scope.row[col.prop] }}
+          <template v-if="col.prop === 'color' && scope.row[col.prop]">
+            <span
+              :style="{ 
+                backgroundColor: scope.row[col.prop],
+                padding: '0 10px',
+                color: '#fff'
+              }">
+              {{ scope.row[col.prop] }}
+            </span>
+          </template>
+
+          <template v-else>
+            {{ scope.row[col.prop] }}
+          </template>
         </template>
 
       </el-table-column>
@@ -48,11 +61,19 @@
         </template>
       </el-table-column>
     </el-table>
+    <TagDialog
+      ref="userDialog"
+      :dialogVisible="dialogVisible"
+      :isEdit="isEdit"
+      :tagId="tagId"
+      @update:dialogVisible="updateDialogVisible"
+    />
   </div>
 </template>
 
 <script>
-import { getUserList } from '@/api/sys/user';
+import { getTagList, removeTag } from '@/api/article/tag';
+import TagDialog from '../components/tag-dialog';
 
 const columns = [
   { prop: 'name', label: '标签名', width: '160', align: 'center' },
@@ -61,12 +82,17 @@ const columns = [
 
 export default {
   name: 'tag',
+  components: {
+    TagDialog
+  },
   data() {
     return {
       columns,
+      tableData: [],
       loading: false,
       isEdit: false,
-      tableData: []
+      tagId: null,
+      dialogVisible: false,
     }
   },
   mounted() {
@@ -75,22 +101,29 @@ export default {
   methods: {
     async fetchData() {
       this.loading = true;
-      this.tableData = await getUserList();
+      this.tableData = await getTagList();
       this.loading = false;
     },
     handleAdd() {
+      this.tagId = null;
       this.isEdit = false;
+      this.dialogVisible = true;
     },
     handleEdit(index, row) {
+      this.tagId = row._id
       this.isEdit = true;
+      this.dialogVisible = true;
     },
     async handleDelete(index, row) {
-      await removeUser(row._id);
+      await removeTag(row._id);
       this.$message.success('删除成功');
       this.fetchData();
     },
     handleRefresh() {
       this.fetchData();
+    },
+    updateDialogVisible(val) {
+      this.dialogVisible = val;
     }
   }
 }

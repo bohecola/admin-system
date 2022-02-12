@@ -8,7 +8,7 @@
       <span slot="title">{{ data.name }}</span>
     </el-menu-item>
 
-    <el-submenu v-else :index="data.name" popper-append-to-body>
+    <el-submenu v-else-if="data.children && !data.hidden" :index="data.name" popper-append-to-body>
       <template slot="title">
         <i v-if="data.icon" :class="data.icon"></i>
         <span>{{ data.name }}</span>
