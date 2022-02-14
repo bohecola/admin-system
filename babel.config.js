@@ -8,6 +8,6 @@ module.exports = {
       {
         languages: ['json', 'javascript', 'typescript', 'bash', 'css', 'html', 'markup', 'java', 'c', 'cpp', 'go', 'php', 'sass', 'scss'],
       },
-    ],
-  ],
+    ]
+  ]
 }
