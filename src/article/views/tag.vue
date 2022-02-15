@@ -10,6 +10,35 @@
       :data="tableData"
       :header-cell-style="{background: '#ebeef5'}"
       border>
+
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <div :style="{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            paddingLeft: '10px',
+            color: '#666'
+          }">
+            文章集合：{{ props.row.articles.length > 0 ? '' : '空' }}
+            <template v-for="(article, index) in props.row.articles">
+              <span
+                :style="{ 
+                  display: 'inline-block',
+                  padding: '3px 10px',
+                  marginRight: '10px',
+                  color: '#666',
+                  backgroundColor: '#f2f2f2',
+                  borderRadius: '2px'
+                }"
+                :key="index">
+                {{article}}
+              </span>
+            </template>
+          </div>
+        </template>
+      </el-table-column>
+
       <el-table-column v-for="col in columns"
         :key="col.prop"
         :label="col.label"
@@ -95,9 +124,9 @@ import { getTagList, removeTag } from '@/api/article/tag';
 import TagDialog from '../components/tag-dialog';
 
 const columns = [
-  { prop: 'name', label: '标签名', width: '160', align: 'center' },
-  { prop: 'color', label: '颜色', width: '160', align: 'center' },
-  { prop: 'creator', label: '创建人', width: '160', align: 'center' }
+  { prop: 'name', label: '标签名', width: '120', align: 'center' },
+  { prop: 'color', label: '颜色', width: '120', align: 'center' },
+  { prop: 'creator', label: '创建人', width: '120', align: 'center' }
 ];
 
 export default {
