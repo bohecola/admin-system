@@ -3,6 +3,12 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+// 解决路由重复点击报错的问题
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+};
+
 import Layout from '@/layout';
 
 import { cloneDeep } from '@/utils/utils';
@@ -14,6 +20,10 @@ const routes = [
     redirect: '/home',
     component: Layout,
     children: [
+      {
+        path: '/home',
+        component: () => import('@/views/home')
+      },
       {
         path: '/my/info',
         component: () => import('@/views/info')
@@ -68,12 +78,13 @@ export function resetRouter() {
 // 生成动态路由
 export const addViews = (list, options) => {
   if (!options) {
-    options = {}
+    options = {};
   }
 
   // Parse route config
   list.forEach(e => {
     const d = cloneDeep(e);
+    Reflect.set(d, 'meta', { label: e.name });
 
     // avoid router repeat
     d.name = d.path;
@@ -82,7 +93,7 @@ export const addViews = (list, options) => {
       const url = d.viewPath;
 
       if (url) {
-        d.component = () => Promise.resolve(views[url])
+        d.component = () => Promise.resolve(views[url]);
       } else {
         d.redirect = '/404';
       }

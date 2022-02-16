@@ -35,19 +35,19 @@
 
       </el-table-column>
 
-      <el-table-column align="center" label="createdAt" min-width="160">
+      <el-table-column align="center" label="创建时间" min-width="160">
         <template slot-scope="scope">
           {{ scope.row.createdAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="updatedAt" min-width="160">
+      <el-table-column align="center" label="更新时间" min-width="160">
         <template slot-scope="scope">
           {{ scope.row.updatedAt | dateFormat('Y-m-d H:i:s') }}
         </template>
       </el-table-column>
       
-      <el-table-column fixed="right" align="center" label="operate" min-width="160">
+      <el-table-column fixed="right" align="center" label="操作" min-width="160">
         <template slot-scope="scope">
           <el-button
             size="mini"

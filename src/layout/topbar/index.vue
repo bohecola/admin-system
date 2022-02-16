@@ -9,7 +9,10 @@
 
     <!-- 路由导航 -->
     <div class="app-topbar__route-nav">
-
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="$route.meta">{{ $route.meta.label ? $route.meta.label : '数据统计' }}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
 
     <div class="flex1"></div>
