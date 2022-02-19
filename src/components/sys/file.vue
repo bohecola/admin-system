@@ -11,23 +11,11 @@
 </template>
 
 <script>
-// 公共模块
-const requireModules = require.context('../../views', false, /.vue$/);
-const commonFiles = requireModules.keys().reduce((files, modulePath) => {
-  files.push(requireModules.resolve(modulePath));
-  return files;
-}, []);
+const files = require
+  .context("@/", true, /views\/(?!(components)|(.*\/components)|(index\.js)).*.(js|vue)/)
+  .keys();
 
-// 文章模块
-const requireArticleModules = require.context('../../article/views', false, /.vue$/);
-const articleFiles = requireArticleModules.keys().reduce((files, modulePath) => {
-  files.push(requireArticleModules.resolve(modulePath));
-  return files;
-}, []);
-
-const files = [...commonFiles, ...articleFiles];
-
-const list = files.map(item => ({ value: item.replace('./src/', '') }));
+const list = files.map(e => ({ value: e.substr(2) }));
 
 export default {
   name: 'lite-menu-file',
