@@ -8,8 +8,11 @@ import { Message } from 'element-ui';
 
 NProgress.configure({ showSpinner: false });
 
+const dev = 'http://localhost:3000/api/weblog';
+const prod = 'http://canday.site:3000/api/weblog';
+
 const service = axios.create({
-  baseURL: 'Http://localhost:3000/api',
+  baseURL: process.env.NODE_ENV === 'development' ? dev : prod,
   timeout: 5000
 });
 
