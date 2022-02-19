@@ -93,7 +93,7 @@ export const addViews = (list, options) => {
       const url = d.viewPath;
 
       if (url) {
-        d.component = () => Promise.resolve(views[url]);
+        d.component = () => import(`@/${url}`);
       } else {
         d.redirect = '/404';
       }
