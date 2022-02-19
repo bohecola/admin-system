@@ -5,14 +5,13 @@ import { getToken } from '@/utils/auth';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { Message } from 'element-ui';
+import base from './base';
 
 NProgress.configure({ showSpinner: false });
 
-const dev = 'http://localhost:3000/api';
-const prod = 'http://canday.site:3000/api';
 
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? dev : prod,
+  baseURL: base,
   timeout: 5000
 });
 
