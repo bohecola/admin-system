@@ -52,7 +52,7 @@
       v-model="form.content"
       :disabled-menus="[]"
       @upload-image="handleUploadImage"
-      height="400px"
+      class="custom-edit"
     ></v-md-editor>
   </div>
 </template>
@@ -151,6 +151,9 @@ export default {
 
   .other-btn {
     float: right;
+  }
+  .custom-edit {
+    height: calc(100% - 58px);
   }
 }
 </style>

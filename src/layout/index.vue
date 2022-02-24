@@ -111,8 +111,9 @@ export default {
       border-radius: 3px;
 
       & > div {
-        min-height: 100%;
+        height: 100%;
         overflow: auto;
+        box-sizing: border-box;
       }
     }
 
