@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 // 文章目录
-export function getArticleList (param) {
+export function getArticlePage (param) {
   return request({
     url: '/articles',
     method: 'get',

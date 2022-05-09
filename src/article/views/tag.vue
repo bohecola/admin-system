@@ -32,7 +32,7 @@
                   borderRadius: '2px'
                 }"
                 :key="index">
-                {{article}}
+                {{article.title}}
               </span>
             </template>
           </div>
@@ -109,6 +109,20 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="table-pagination">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[10, 20, 30, 40, 50, 100]"
+        :page-size="query.limit"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
+
     <TagDialog
       ref="userDialog"
       :dialogVisible="dialogVisible"
@@ -120,7 +134,7 @@
 </template>
 
 <script>
-import { getTagList, removeTag } from '@/api/article/tag';
+import { getTagPage, removeTag } from '@/api/article/tag';
 import TagDialog from '../components/tag-dialog';
 
 const columns = [
@@ -138,6 +152,11 @@ export default {
     return {
       columns,
       tableData: [],
+      query: {
+        page: 1,
+        limit: 10
+      },
+      total: 0,
       loading: false,
       isEdit: false,
       tagId: null,
@@ -150,7 +169,10 @@ export default {
   methods: {
     async fetchData() {
       this.loading = true;
-      this.tableData = await getTagList();
+      const res = await getTagPage(this.query);
+      const { docs, total } = res.data;
+      this.tableData = docs;
+      this.total = total;
       this.loading = false;
     },
     handleAdd() {
@@ -173,6 +195,14 @@ export default {
     },
     updateDialogVisible(val) {
       this.dialogVisible = val;
+    },
+    handleSizeChange(val) {
+      this.query.limit = val;
+      this.fetchData();
+    },
+    handleCurrentChange(val) {
+      this.query.page = val;
+      this.fetchData();
     }
   }
 }

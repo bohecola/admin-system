@@ -18,8 +18,7 @@
         <el-select
           v-model="form.category"
           placeholder="目录选择"
-          clearable
-          @change="handleCategorySelect">
+          clearable>
           <el-option v-for="item in categories"
             :key="item._id"
             :label="item.name"
@@ -32,8 +31,7 @@
           v-model="form.tags"
           placeholder="标签选择"
           multiple
-          clearable
-          @change="handleTagsSelect">
+          clearable>
           <el-option v-for="item in tags"
             :key="item._id"
             :label="item.name"
@@ -79,7 +77,7 @@ export default {
       form: {
         title: '',
         content: '',
-        category: null,
+        category: '',
         tags: []
       },
       rules: {
@@ -88,8 +86,12 @@ export default {
     }
   },
   async mounted() {
-    this.categories = await getCategoryList();
-    this.tags = await getTagList();
+    const categoryRes = await getCategoryList();
+    this.categories = categoryRes.data;
+  
+    const TagsRes = await getTagList();
+    this.tags = TagsRes.data;
+
     if (this.$route.params && this.$route.params.id) {
       const res = await findArticle(this.$route.params.id);
       this.form = res.data;
@@ -119,7 +121,6 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.$utils.removePropertyOfNull(this.form);
           const res = this.isEdit
             ? await updateArticle(this.form._id, this.form)
             : await addArticle(this.form);
@@ -132,12 +133,6 @@ export default {
           return false;
         }
       });
-    },
-    handleCategorySelect() {
-
-    },
-    handleTagsSelect() {
-
     },
   }
 }

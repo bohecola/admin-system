@@ -1,8 +1,16 @@
 import request from '@/utils/request';
 // 文章目录
-export function getCategoryList (param) {
+export function getCategoryPage (param) {
   return request({
     url: '/category',
+    method: 'get',
+    params: param
+  });
+}
+
+export function getCategoryList (param) {
+  return request({
+    url: '/category-list',
     method: 'get',
     params: param
   });

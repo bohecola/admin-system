@@ -135,14 +135,15 @@ export default {
           // 编辑
           this.loading = true;
           const res = await findUser(this.userId);
-          const { _id, avatar, username, password, name, desc, roles } = res;
+          const { _id, avatar, username, password, name, desc, roles } = res.data;
           this.form = { _id, avatar, username, password, name, desc, roles };
           if (avatar) this.imageUrl = avatar;
           this.loading = false;
         } else {
           if (this.form._id) delete this.form._id;
         }
-        this.roleList = await getRoleList();
+        const res = await getRoleList();
+        this.roleList = res.data
       }
     }
   },
@@ -170,7 +171,6 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.$utils.removePropertyOfNull(this.form);
           const res = this.isEdit 
             ? await updateUser(this.form._id, this.form)
             : await addUser(this.form);

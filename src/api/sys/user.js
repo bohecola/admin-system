@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 // 用户
-export function getUserList (param) {
+export function getUserPage (param) {
   return request({
     url: '/users',
     method: 'get',

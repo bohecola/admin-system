@@ -92,11 +92,24 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="table-pagination">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[10, 20, 30, 40, 50, 100]"
+        :page-size="query.limit"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-import { getArticleList, removeArticle } from '@/api/article/article';
+import { getArticlePage, removeArticle } from '@/api/article/article';
 
 const columns = [
   { prop: 'title', label: '标题', width: '100', align: 'center' },
@@ -113,7 +126,12 @@ export default {
       columns,
       loading: false,
       isEdit: false,
-      tableData: []
+      tableData: [],
+      query: {
+        page: 1,
+        limit: 10
+      },
+      total: 0
     }
   },
   mounted() {
@@ -122,8 +140,10 @@ export default {
   methods: {
     async fetchData() {
       this.loading = true;
-      const res = await getArticleList({ page: 1, limit: 10 });
-      this.tableData = res.data.docs;
+      const res = await getArticlePage(this.query);
+      const { docs, total } = res.data;
+      this.tableData = docs;
+      this.total = total;
       this.loading = false;
     },
     handleAdd() {
@@ -140,6 +160,14 @@ export default {
       this.fetchData();
     },
     handleRefresh() {
+      this.fetchData();
+    },
+    handleSizeChange(val) {
+      this.query.limit = val;
+      this.fetchData();
+    },
+    handleCurrentChange(val) {
+      this.query.page = val;
       this.fetchData();
     }
   }

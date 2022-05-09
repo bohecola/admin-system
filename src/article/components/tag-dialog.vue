@@ -79,7 +79,7 @@ export default {
           // 编辑
           this.loading = true;
           const res = await findTag(this.tagId);
-          const { _id, name, color } = res;
+          const { _id, name, color } = res.data;
           this.form = { _id, name, color };
           this.loading = false;
         } else {
@@ -95,7 +95,6 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.$utils.removePropertyOfNull(this.form);
           const res = this.isEdit 
             ? await updateTag(this.form._id, this.form)
             : await addTag(this.form);

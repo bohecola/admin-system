@@ -1,8 +1,16 @@
 import request from '@/utils/request';
 // 角色
-export function getRoleList (param) {
+export function getRolePage (param) {
   return request({
     url: '/roles',
+    method: 'get',
+    params: param
+  });
+}
+
+export function getRoleList (param) {
+  return request({
+    url: '/roles-list',
     method: 'get',
     params: param
   });

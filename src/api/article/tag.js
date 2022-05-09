@@ -1,8 +1,16 @@
 import request from '@/utils/request';
 // 文章目录
-export function getTagList (param) {
+export function getTagPage (param) {
   return request({
     url: '/tags',
+    method: 'get',
+    params: param
+  });
+}
+
+export function getTagList (param) {
+  return request({
+    url: '/tags-list',
     method: 'get',
     params: param
   });

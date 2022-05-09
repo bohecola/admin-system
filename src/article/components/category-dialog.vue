@@ -74,7 +74,7 @@ export default {
           // 编辑
           this.loading = true;
           const res = await findCategory(this.categoryId);
-          const { _id, name } = res;
+          const { _id, name } = res.data;
           this.form = { _id, name };
           this.loading = false;
         } else {
@@ -90,7 +90,6 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.$utils.removePropertyOfNull(this.form);
           const res = this.isEdit 
             ? await updateCategory(this.form._id, this.form)
             : await addCategory(this.form);

@@ -175,7 +175,6 @@ export default {
     submit(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          this.$utils.removePropertyOfNull(this.form, 'parentId');
           const res = this.isEdit 
             ? await updateMenu(this.form._id, this.form)
             : await addMenu(this.form);

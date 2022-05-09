@@ -62,6 +62,20 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="table-pagination">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="query.page"
+        :page-sizes="[10, 20, 30, 40, 50, 100]"
+        :page-size="query.limit"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
+    </div>
+
     <UserDialog
       ref="userDialog"
       :dialogVisible="dialogVisible"
@@ -73,7 +87,7 @@
 </template>
 
 <script>
-import { getUserList, removeUser } from '@/api/sys/user';
+import { getUserPage, removeUser } from '@/api/sys/user';
 import UserDialog from '@/components/sys/user-dialog';
 
 const columns = [
@@ -91,6 +105,11 @@ export default {
       columns,
       loading: false,
       tableData: [],
+      query: {
+        page: 1,
+        limit: 10
+      },
+      total: 0,
       dialogVisible: false,
       isEdit: false,
       userId: null
@@ -105,7 +124,10 @@ export default {
   methods: {
     async fetchData() {
       this.loading = true;
-      this.tableData = await getUserList();
+      const res = await getUserPage(this.query);
+      const { docs, total } = res.data;
+      this.tableData = docs;
+      this.total = total;
       this.loading = false;
     },
     handleAdd() {
@@ -128,6 +150,14 @@ export default {
     },
     updateDialogVisible(val) {
       this.dialogVisible = val;
+    },
+    handleSizeChange(val) {
+      this.query.limit = val;
+      this.fetchData();
+    },
+    handleCurrentChange(val) {
+      this.query.page = val;
+      this.fetchData();
     }
   }
 }

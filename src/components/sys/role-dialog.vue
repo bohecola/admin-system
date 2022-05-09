@@ -116,7 +116,8 @@ export default {
     },
     async visible(val) {
       if (val) {
-        this.menuList = await getMenuList();
+        const res = await getMenuList();
+        this.menuList = res.data;
         
         if (this.isEdit) {
           const leafMenus = this.menuList.filter(menu => menu.type === 1);
@@ -171,7 +172,6 @@ export default {
         if (valid) {
           // 被勾选的菜单_id数组（给角色分配的菜单）
           this.form.menus = this.getAllCheckedKeys();
-          this.$utils.removePropertyOfNull(this.form);
 
           // 数据提交
           const res = this.isEdit

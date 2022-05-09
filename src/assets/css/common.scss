@@ -57,6 +57,17 @@
   .table-toolbar {
     margin-bottom: 12px;
   }
+
+  .table-pagination, .table-total {
+    float: right;
+    margin-top: 10px;
+  }
+  
+  .table-total {
+    margin-right: 10px;
+    font-size: 14px;
+    color: #666;
+  }
 }
 
 .scroller {

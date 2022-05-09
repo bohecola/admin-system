@@ -59,6 +59,11 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <div class="table-total">
+      共 {{total}} 条
+    </div>
+
     <MenuDialog
       :dialogVisible="dialogVisible"
       :isEdit="isEdit"
@@ -80,6 +85,7 @@ export default {
   },
   data() {
     return {
+      total: 0,
       tableTreeData: [],
       dialogVisible: false,
       isEdit: false,
@@ -110,8 +116,10 @@ export default {
     // 列表
     async fetchData() {
       this.loading = true;
-      const res = await getMenuList();
-      this.tableTreeData = this.$utils.formatDataTree(res);
+      const res = await getMenuList(this.query);
+      const { data } = res;
+      this.total = data.length;
+      this.tableTreeData = this.$utils.formatDataTree(data);
       this.loading = false;
     },
     // 添加
@@ -124,7 +132,8 @@ export default {
     // 编辑
     async handleEdit(index, row) {
       this.isEdit = true;
-      this.dialogData = await findMenu(row._id);
+      const res = await findMenu(row._id);
+      this.dialogData = res.data;
       this.menuTree = this.tableTreeData;
       this.dialogVisible = true;
     },
