@@ -14,7 +14,7 @@
           placeholder="标题"
         ></el-input>
       </el-form-item>
-      <el-form-item prop="category">
+      <el-form-item>
         <el-select
           v-model="form.category"
           placeholder="目录选择"
@@ -27,7 +27,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="tags">
+      <el-form-item>
         <el-select
           v-model="form.tags"
           placeholder="标签选择"
@@ -83,9 +83,7 @@ export default {
         tags: []
       },
       rules: {
-        name: [{ required: true, message: 'name is required', trigger: 'blur' }],
-        category: [{ required: true, message: 'category is required', trigger: 'blur' }],
-        tags: [{ required: true, message: 'tags is required', trigger: 'blur' }]
+        name: [{ required: true, message: 'name is required', trigger: 'blur' }]
       }
     }
   },
@@ -93,7 +91,8 @@ export default {
     this.categories = await getCategoryList();
     this.tags = await getTagList();
     if (this.$route.params && this.$route.params.id) {
-      this.form = await findArticle(this.$route.params.id);
+      const res = await findArticle(this.$route.params.id);
+      this.form = res.data;
     }
   },
   methods: {

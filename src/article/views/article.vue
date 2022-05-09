@@ -36,6 +36,10 @@
             </span>
           </template>
 
+          <template v-else-if="col.prop === 'category' && scope.row[col.prop]">
+            {{ scope.row[col.prop].name }}
+          </template>
+
           <template v-else-if="col.prop === 'author' && scope.row[col.prop]">
             <div :style="{ display: 'flex', alignItems: 'center', justifyContent: 'center' }">
               <img
@@ -118,7 +122,8 @@ export default {
   methods: {
     async fetchData() {
       this.loading = true;
-      this.tableData = await getArticleList();
+      const res = await getArticleList({ page: 1, limit: 10 });
+      this.tableData = res.data.docs;
       this.loading = false;
     },
     handleAdd() {
